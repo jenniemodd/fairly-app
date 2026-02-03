@@ -3,64 +3,153 @@
 
 
 /*
-PSEUDO KOD FÖR BUDGETAPP
+FAIRLY – Pseudokod / Arbetsflöde
 
-1. Skapa grundläggande HTML-struktur
-Skapa inputfält för inkomst med belopp och beskrivning.
-Skapa inputfält för utgift med belopp och beskrivning.
-Skapa dropdown-lista för kategori till varje budgetpost.
-Skapa knappar för att lägga till inkomst och utgift.
-Skapa en sektion där alla budgetposter visas.
-Skapa en tydlig sektion där balansen visas.
+Syfte:
+En enkel budgetapp för två personer (Person A och Person B) där
+inkomster och utgifter kan läggas till, tas bort och sammanställas.
+Appen visar balans, fördelning och slutresultat (vem ska swisha vem).
 
-2. Skapa datastrukturer i JavaScript
-Skapa en lista där alla inkomster sparas.
-Skapa en lista där alla utgifter sparas.
-Varje post ska innehålla belopp, beskrivning och vald kategori.
+-------------------------------------------------
+1. Grundstruktur och inställningar (Personer)
+-------------------------------------------------
+Skapa en sektion högst upp för Person A och Person B.
+Här ska användaren kunna:
+- Ange namn för Person A
+- Ange namn för Person B
+- Ange inkomst för Person A
+- Ange inkomst för Person B
 
-3. Hantera inkomster
-När användaren matar in en inkomst och klickar på lägg till:
-Skapa en ny inkomstpost.
-Lägg till posten i listan med inkomster.
-Uppdatera listan som visas på sidan.
-Räkna om balansen.
+Denna sektion fungerar som inställningar.
+Den ändras sällan men påverkar alla beräkningar i appen.
 
-4. Hantera utgifter
-När användaren matar in en utgift och klickar på lägg till:
-Skapa en ny utgiftspost.
-Lägg till posten i listan med utgifter.
-Uppdatera listan som visas på sidan.
-Räkna om balansen.
+-------------------------------------------------
+2. Datastrukturer i JavaScript
+-------------------------------------------------
+Skapa ett objekt för personer:
+- Person A (namn, inkomst)
+- Person B (namn, inkomst)
 
-5. Visa budgetposter med radera-knapp
-Visa varje inkomst och utgift i listan.
-Bredvid varje post ska det finnas en radera-knapp.
-När användaren klickar på radera:
-Ta bort posten från rätt lista.
-Uppdatera listan som visas.
-Räkna om balansen.
+Skapa två listor:
+- En lista för inkomster
+- En lista för utgifter
 
-6. Beräkna balansen
-Varje gång inkomster eller utgifter ändras:
-Räkna ihop alla inkomster.
-Räkna ihop alla utgifter.
-Räkna ut balansen som inkomster minus utgifter.
+Varje budgetpost (inkomst eller utgift) ska innehålla:
+- Belopp
+- Beskrivning
+- Kategori
+- Typ (inkomst eller utgift)
+- Betalad av (endast för utgift: Person A eller Person B)
 
-7. Visa och färgkoda balansen
-Visa balansen tydligt på sidan.
-Om balansen är positiv ska den visas i en positiv färg.
-Om balansen är negativ ska den visas i en negativ färg.
+-------------------------------------------------
+3. Lägg till inkomst
+-------------------------------------------------
+Skapa ett formulär för att lägga till inkomst med:
+- Belopp
+- Beskrivning
+- Kategori
 
-8. Kategorier
-Låt användaren välja kategori från en dropdown-lista.
-Spara vald kategori tillsammans med varje budgetpost.
-Visa kategorin i listan bredvid posten.
+När användaren klickar på "Lägg till":
+- Skapa en ny inkomstpost
+- Lägg till posten i listan med inkomster
+- Uppdatera listan med budgetposter
+- Räkna om totalsummor och balans
 
-9. Förberedelse för local storage (implementeras senare)
-Strukturera datan så att inkomster och utgifter enkelt kan sparas.
-När local storage implementeras ska datan sparas vid varje förändring.
-När sidan laddas ska sparad data läsas in och visas automatiskt.
+-------------------------------------------------
+4. Lägg till utgift
+-------------------------------------------------
+Skapa ett formulär för att lägga till utgift med:
+- Belopp
+- Beskrivning
+- Kategori
+- Val av vem som betalade (Person A eller Person B)
+
+När användaren klickar på "Lägg till":
+- Skapa en ny utgiftspost
+- Koppla utgiften till vald person
+- Lägg till posten i listan med utgifter
+- Uppdatera listan med budgetposter
+- Räkna om totalsummor, balans och fördelning
+
+-------------------------------------------------
+5. Visa budgetposter
+-------------------------------------------------
+Visa alla inkomster och utgifter i en gemensam lista.
+
+För varje post:
+- Visa om det är en inkomst (+) eller utgift (-)
+- Visa belopp och beskrivning
+- Visa kategori
+- Visa vem som betalat (för utgifter)
+- Visa en knapp för att ta bort posten
+
+-------------------------------------------------
+6. Ta bort budgetpost
+-------------------------------------------------
+När användaren klickar på "Ta bort":
+- Ta bort posten från rätt lista (inkomst eller utgift)
+- Uppdatera listan som visas
+- Räkna om totalsummor, balans och resultat
+
+-------------------------------------------------
+7. Beräkna totalsummor
+-------------------------------------------------
+Varje gång data ändras:
+- Räkna ihop alla inkomster
+- Räkna ihop alla utgifter
+- Räkna ut balans (inkomster minus utgifter)
+
+-------------------------------------------------
+8. Beräkna fördelning mellan Person A och Person B
+-------------------------------------------------
+Utgå från alla utgifter:
+- Räkna hur mycket Person A har betalat totalt
+- Räkna hur mycket Person B har betalat totalt
+
+Beroende på vald fördelning:
+- 50/50: dela totala utgiften lika
+- (Procentfördelning kan läggas till senare)
+
+-------------------------------------------------
+9. Räkna ut slutresultat (swish)
+-------------------------------------------------
+Jämför för varje person:
+- Hur mycket personen har betalat
+- Hur mycket personen borde betala
+
+Om en person har betalat mer än sin andel:
+- Den andra personen ska swisha mellanskillnaden
+
+Om båda ligger lika:
+- Ingen behöver swisha
+
+-------------------------------------------------
+10. Visa sammanställning
+-------------------------------------------------
+Visa tydligt:
+- Totala inkomster
+- Totala utgifter
+- Balans (färgkodad: grön eller röd)
+- Total utgift för Person A
+- Total utgift för Person B
+- Vald fördelning
+- Slutresultat (vem ska swisha vem och hur mycket)
+
+-------------------------------------------------
+11. Förberedelse för localStorage (implementeras senare)
+-------------------------------------------------
+Strukturera datan så att:
+- Inkomster
+- Utgifter
+- Personinformation
+
+enkelt kan sparas i localStorage.
+
+När localStorage implementeras:
+- Spara data vid varje förändring
+- Läs in sparad data när sidan laddas
 */
+
 
 
 
