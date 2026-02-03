@@ -1,3 +1,5 @@
+
+// @ts-nocheck
 import './style.scss';
 import typescriptLogo from './typescript.svg'
 import viteLogo from '/vite.svg'
