@@ -7,6 +7,18 @@
   <body>
     <h1>Budget App</h1>
     <form>
+<label>
+        <span>Utgift</span>
+        <input type="text" name="expense" />
+      </label>
+
+      <label>
+        <span>Belopp</span>
+        <input type="number" name="amount" />
+        <button type="submit" id="register">Lägg till</button>
+         <button type="button" id="remove">Ta bort</button>
+      </label>
+
       <label>
         <span>Inkomst</span>
         <input type="text" name="income" />
@@ -16,6 +28,7 @@
         <span>Belopp</span>
         <input type="number" name="amount" />
         <button type="submit" id="register">Lägg till</button>
+        <button type="button" id="remove">Ta bort</button>
       </label>
     </form>
     <script type="module" src="/src/main.ts"></script>
