@@ -2,46 +2,124 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>fed25d-js-inl-2-budget-app-jenniemodd</title>
-  </head>
-  <body>
-    <h1>Fairly</h1>
-    <form>
-<label>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fairly</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+  <!-- App container -->
+  <main class="app">
 
-<h2>Personer</h2>
-<p>Person A</p>
-<p>Person B</p>
-  <section class="expense-input">
-        <span>Utgift</span>
-        <input type="text" name="expense" />
-      </label>
+    <!-- Header -->
+    <header class="app-header">
+      <h1>Fairly</h1>
+    </header>
 
-      <label>
-        <span>Belopp</span>
-        <input type="number" name="amount" class="amount-input"/>
-        <button type="submit" id="register">Lägg till</button>
-         <button type="button" id="remove">Ta bort</button>
-      </label>
+    <!-- Personer / inställningar -->
+    <section class="persons">
+      <h2>Personer</h2>
+
+      <div class="person-cards">
+
+        <div class="person-card">
+          <h3>Person A</h3>
+          <label>
+            Namn
+            <input type="text" id="personA-name" />
+          </label>
+          <label>
+            Inkomst
+            <input type="number" id="personA-income" />
+          </label>
+        </div>
+
+        <div class="person-card">
+          <h3>Person B</h3>
+          <label>
+            Namn
+            <input type="text" id="personB-name" />
+          </label>
+          <label>
+            Inkomst
+            <input type="number" id="personB-income" />
+          </label>
+        </div>
+
+      </div>
     </section>
-      <label>
-          <section class="income-input">
-        <span>Inkomst</span>
-        <input type="text" name="income" />
-      </label>
 
-      <label>
-        <span>Belopp</span>
-        <input type="number" name="amount" />
-        <button type="submit" id="register">Lägg till</button>
-        <button type="button" id="remove">Ta bort</button>
-      </section>
-      </label>
+    <!-- Lägg till utgift -->
+    <section class="add-expense">
+      <h2>Lägg till utgift</h2>
 
+      <form id="expense-form">
+        <label>
+          Belopp
+          <input type="number" id="expense-amount" required />
+        </label>
 
+        <label>
+          Beskrivning
+          <input type="text" id="expense-description" required />
+        </label>
 
-    </form>
+        <label>
+          Kategori
+          <select id="expense-category">
+            <option value="">Välj kategori</option>
+          </select>
+        </label>
+
+        <fieldset>
+          <legend>Vem betalade?</legend>
+          <label>
+            <input type="radio" name="paidBy" value="A" required />
+            Person A
+          </label>
+          <label>
+            <input type="radio" name="paidBy" value="B" />
+            Person B
+          </label>
+        </fieldset>
+
+        <button type="submit">Lägg till</button>
+      </form>
+    </section>
+
+    <!-- Budgetposter -->
+    <section class="budget-posts">
+      <h2>Budgetposter</h2>
+
+      <ul id="posts-list">
+        <!-- Renderas via JavaScript -->
+      </ul>
+    </section>
+
+    <!-- Sammanställning -->
+    <section class="summary">
+      <h2>Sammanställning</h2>
+
+      <p>Totala inkomster: <span id="total-income">0</span> kr</p>
+      <p>Totala utgifter: <span id="total-expense">0</span> kr</p>
+
+      <p class="balance">
+        Balans: <span id="balance-amount">0</span> kr
+      </p>
+
+      <hr />
+
+      <p>Total utgift Person A: <span id="personA-total">0</span> kr</p>
+      <p>Total utgift Person B: <span id="personB-total">0</span> kr</p>
+
+      <p>Fördelning: <span id="split-type">50 / 50</span></p>
+
+      <p class="result" id="settlement-result">
+        <!-- Swish-resultat via JS -->
+      </p>
+    </section>
+
+  </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -1,10 +1,38 @@
 @use 'reset';
 
 body {
-    background-color: antiquewhite;
+  font-family: system-ui, sans-serif;
+  background: #f5f5f5;
+  margin: 0;
 }
 
-h1 {
-    color: darkblue;
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
 }
 
+section {
+  background: white;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.person-cards {
+  display: flex;
+  gap: 16px;
+}
+
+.person-card {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 12px;
+}
+
+input, select, button {
+  width: 100%;
+}
