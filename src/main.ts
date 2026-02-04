@@ -154,5 +154,20 @@ När localStorage implementeras:
 import './style.scss';
 
 
-let expense = [];
+let expenses = [];
 
+const amountinput =document.querySelector('#expense-amount');
+const descriptioninput =document.querySelector('#expense-description');
+const categoryinput =document.querySelector('#expense-category');
+const Forminput =document.querySelector('#expense-form');
+const ulElement = document.querySelector('#posts-list');
+
+Forminput.addEventListener('submit', function(event){
+  event.preventDefault();
+  console.log('form submitted');
+
+console.log(amountinput.value)
+console.log(descriptioninput.value)
+console.log(categoryinput.value)
+
+});
