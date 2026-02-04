@@ -164,10 +164,24 @@ const ulElement = document.querySelector('#posts-list');
 
 Forminput.addEventListener('submit', function(event){
   event.preventDefault();
-  console.log('form submitted');
 
+const amount =Number(amountinput.value);
+const description =descriptioninput.value;
+const category =categoryinput.value;
+
+const expense = {
+  amount: amount,
+  description: description,
+  category: category
+};
+
+expenses.push(expense);
+
+console.log('form submitted');
+console.log('Expenses Array:', expenses);
 console.log(amountinput.value)
 console.log(descriptioninput.value)
 console.log(categoryinput.value)
+
 
 });
