@@ -151,11 +151,8 @@ När localStorage implementeras:
 */
 
 
-
-
-
-
-
 import './style.scss';
 
+
+let expense = [];
 
