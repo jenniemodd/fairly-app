@@ -161,6 +161,8 @@ const descriptioninput =document.querySelector('#expense-description');
 const categoryinput =document.querySelector('#expense-category');
 const Forminput =document.querySelector('#expense-form');
 const ulElement = document.querySelector('#posts-list');
+const totalExpenseEl = document.querySelector('#total-expense');
+
 
 Forminput.addEventListener('submit', function(event){
   event.preventDefault();
@@ -179,6 +181,8 @@ const expense = {
 
 expenses.push(expense);
 renderExpenses();
+updateSummary();
+
 
 console.log('form submitted');
 console.log('Expenses Array:', expenses);
@@ -193,15 +197,35 @@ const renderExpenses = () => {
 
   expenses.forEach((expense, index) => {
     const li = document.createElement('li');
+
     li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (Person ${expense.paidBy})`;
-     const deleteButton = document.createElement('button');
+     
+    const deleteButton = document.createElement('button');
      deleteButton.textContent = 'Ta bort';
+     
      deleteButton.addEventListener('click', function() {
        expenses.splice(index, 1);
        renderExpenses();
+       updateSummary();
      });
     li.appendChild(deleteButton);
     ulElement.appendChild(li);
   });
-}
+};
+
+const updateSummary = () => {
+  const totalExpenses = calculateTotalExpenses();
+  totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE');
+};
+
+
+const calculateTotalExpenses = () => {
+  let total = 0;
+
+  expenses.forEach(expense => {
+    total += expense.amount;
+  });
+
+  return total;
+};
 
