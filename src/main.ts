@@ -172,10 +172,13 @@ const category =categoryinput.value;
 const expense = {
   amount: amount,
   description: description,
-  category: category
+  category: category,
+  paidBy: "A" // Hardcoded for now, can be dynamic later
+
 };
 
 expenses.push(expense);
+renderExpenses();
 
 console.log('form submitted');
 console.log('Expenses Array:', expenses);
@@ -183,5 +186,22 @@ console.log(amountinput.value)
 console.log(descriptioninput.value)
 console.log(categoryinput.value)
 
-
 });
+
+const renderExpenses = () => {
+  ulElement.innerHTML = '';
+
+  expenses.forEach((expense, index) => {
+    const li = document.createElement('li');
+    li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (Person ${expense.paidBy})`;
+     const deleteButton = document.createElement('button');
+     deleteButton.textContent = 'Ta bort';
+     deleteButton.addEventListener('click', function() {
+       expenses.splice(index, 1);
+       renderExpenses();
+     });
+    li.appendChild(deleteButton);
+    ulElement.appendChild(li);
+  });
+}
+
