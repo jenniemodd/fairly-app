@@ -153,15 +153,34 @@ När localStorage implementeras:
 
 import './style.scss';
 
-
+// Data strukturer
 let expenses = [];
+let personAIncome = 0;
+let personBIncome = 0;
 
+// DOM element
 const amountinput =document.querySelector('#expense-amount');
 const descriptioninput =document.querySelector('#expense-description');
 const categoryinput =document.querySelector('#expense-category');
 const Forminput =document.querySelector('#expense-form');
 const ulElement = document.querySelector('#posts-list');
 const totalExpenseEl = document.querySelector('#total-expense');
+const personAIncomeInput = document.querySelector('#personA-income');
+const personBIncomeInput = document.querySelector('#personB-income');
+const totalIncomeEl = document.querySelector('#total-income');
+const balanceEl = document.querySelector('#balance-amount');
+
+
+// Event lyssnare
+personAIncomeInput.addEventListener('input', () => {
+  personAIncome = Number(personAIncomeInput.value);
+  updateSummary();
+});
+
+personBIncomeInput.addEventListener('input', () => {
+  personBIncome = Number(personBIncomeInput.value);
+  updateSummary();
+});
 
 
 Forminput.addEventListener('submit', function(event){
@@ -180,18 +199,14 @@ const expense = {
 };
 
 expenses.push(expense);
+Forminput.reset();
 renderExpenses();
 updateSummary();
 
 
-console.log('form submitted');
-console.log('Expenses Array:', expenses);
-console.log(amountinput.value)
-console.log(descriptioninput.value)
-console.log(categoryinput.value)
-
 });
 
+// Funktioner
 const renderExpenses = () => {
   ulElement.innerHTML = '';
 
@@ -213,19 +228,28 @@ const renderExpenses = () => {
   });
 };
 
-const updateSummary = () => {
-  const totalExpenses = calculateTotalExpenses();
-  totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE');
-};
-
-
 const calculateTotalExpenses = () => {
   let total = 0;
 
   expenses.forEach(expense => {
     total += expense.amount;
   });
-
-  return total;
+    return total;
 };
 
+  const calculateTotalIncome = () => {
+  return personAIncome + personBIncome;
+};
+
+const updateSummary = () => {
+  const totalExpenses = calculateTotalExpenses();
+  const totalIncome = calculateTotalIncome();
+  const balance = totalIncome - totalExpenses;
+
+  totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE');
+  totalIncomeEl.textContent = totalIncome.toLocaleString('sv-SE');
+  balanceEl.textContent = balance.toLocaleString('sv-SE');
+
+  // färgkoda balans
+  balanceEl.style.color = balance >= 0 ? 'green' : 'red';
+};
