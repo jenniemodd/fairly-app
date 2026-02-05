@@ -198,15 +198,42 @@ const expense = {
 
 };
 
+
 expenses.push(expense);
 Forminput.reset();
 renderExpenses();
 updateSummary();
+saveToLocalStorage();
+readFromLocalStorage();
+
 
 
 });
 
 // Funktioner
+
+   // Local storage funktion
+
+function saveToLocalStorage() {
+  localStorage.setItem("expenses", JSON.stringify(expenses));
+  console.log("Data saved to localStorage");
+}
+
+function readFromLocalStorage() {
+  const savedValue = localStorage.getItem("expenses");
+
+  if (savedValue === null) {
+    console.warn("Det finns inget sparat i localStorage");
+    return;
+  }
+
+  expenses = JSON.parse(savedValue);
+  console.log("Data loaded:", expenses);
+
+}
+
+//
+
 const renderExpenses = () => {
   ulElement.innerHTML = '';
 
@@ -222,6 +249,7 @@ const renderExpenses = () => {
        expenses.splice(index, 1);
        renderExpenses();
        updateSummary();
+       saveToLocalStorage();
      });
     li.appendChild(deleteButton);
     ulElement.appendChild(li);
@@ -249,6 +277,7 @@ const updateSummary = () => {
   totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE');
   totalIncomeEl.textContent = totalIncome.toLocaleString('sv-SE');
   balanceEl.textContent = balance.toLocaleString('sv-SE');
+
 
   // färgkoda balans
   balanceEl.style.color = balance >= 0 ? 'green' : 'red';
