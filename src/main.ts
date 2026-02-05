@@ -155,8 +155,10 @@ import './style.scss';
 
 // Data strukturer
 let expenses = [];
-let personAIncome = 0;
-let personBIncome = 0;
+const incomes = {
+  personA: 0,
+  personB: 0
+};
 
 // DOM element
 const amountinput =document.querySelector('#expense-amount');
@@ -173,12 +175,14 @@ const balanceEl = document.querySelector('#balance-amount');
 
 // Event lyssnare
 personAIncomeInput.addEventListener('input', () => {
-  personAIncome = Number(personAIncomeInput.value);
+  incomes.personA = Number(personAIncomeInput.value);
+  saveIncomesToLocalStorage();
   updateSummary();
 });
 
 personBIncomeInput.addEventListener('input', () => {
-  personBIncome = Number(personBIncomeInput.value);
+  incomes.personB = Number(personBIncomeInput.value);
+  saveIncomesToLocalStorage();
   updateSummary();
 });
 
@@ -204,33 +208,41 @@ Forminput.reset();
 renderExpenses();
 updateSummary();
 saveToLocalStorage();
-readFromLocalStorage();
 
 
 
 });
 
-// Funktioner
+// ===== LOCAL STORAGE =====
 
-   // Local storage funktion
-
+// Utgifter
 function saveToLocalStorage() {
   localStorage.setItem("expenses", JSON.stringify(expenses));
-  console.log("Data saved to localStorage");
 }
 
 function readFromLocalStorage() {
   const savedValue = localStorage.getItem("expenses");
-
-  if (savedValue === null) {
-    console.warn("Det finns inget sparat i localStorage");
-    return;
-  }
-
-  expenses = JSON.parse(savedValue);
-  console.log("Data loaded:", expenses);
-
+  if (savedValue) expenses = JSON.parse(savedValue);
 }
+
+// Inkomst
+function saveIncomesToLocalStorage() {
+  localStorage.setItem("incomes", JSON.stringify(incomes));
+}
+
+function readIncomesFromLocalStorage() {
+  const savedIncomes = localStorage.getItem("incomes");
+  if (!savedIncomes) return;
+
+  const parsed = JSON.parse(savedIncomes);
+  incomes.personA = parsed.personA || 0;
+  incomes.personB = parsed.personB || 0;
+
+  personAIncomeInput.value = incomes.personA;
+  personBIncomeInput.value = incomes.personB;
+}
+
+
 
 //
 
@@ -266,7 +278,7 @@ const calculateTotalExpenses = () => {
 };
 
   const calculateTotalIncome = () => {
-  return personAIncome + personBIncome;
+  return incomes.personA + incomes.personB;
 };
 
 const updateSummary = () => {
@@ -282,3 +294,8 @@ const updateSummary = () => {
   // färgkoda balans
   balanceEl.style.color = balance >= 0 ? 'green' : 'red';
 };
+
+readFromLocalStorage();
+readIncomesFromLocalStorage();
+renderExpenses();
+updateSummary();
