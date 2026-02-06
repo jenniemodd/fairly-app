@@ -176,6 +176,11 @@ const personBIncomeInput = document.querySelector('#personB-income');
 const totalIncomeEl = document.querySelector('#total-income');
 const balanceEl = document.querySelector('#balance-amount');
 const paidByInput = document.querySelector('input[name="paidBy"]:checked');
+const personATotalEl = document.querySelector('#personA-total');
+const personBTotalEl = document.querySelector('#personB-total');
+const settlementResultEl = document.querySelector('#settlement-result');
+
+
 
 
 // ===== RENDER CATEGORIES =====
@@ -256,6 +261,25 @@ function readIncomesFromLocalStorage() {
   personBIncomeInput.value = incomes.personB;
 }
 
+// Funktion för sluträkning av utgifer
+
+const calculatePaidPerPerson = () => {
+  let paidByA = 0;
+  let paidByB = 0;
+
+  expenses.forEach(expense => {
+    if (expense.paidBy === 'A') {
+      paidByA += expense.amount;
+    } else if (expense.paidBy === 'B') {
+      paidByB += expense.amount;
+    }
+  });
+
+  return {
+    A: paidByA,
+    B: paidByB
+  };
+};
 
 
 //
@@ -298,12 +322,35 @@ const calculateTotalExpenses = () => {
 const updateSummary = () => {
   const totalExpenses = calculateTotalExpenses();
   const totalIncome = calculateTotalIncome();
-  const balance = totalIncome - totalExpenses;
+  const paid = calculatePaidPerPerson();
 
   totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE');
   totalIncomeEl.textContent = totalIncome.toLocaleString('sv-SE');
+
+  personATotalEl.textContent = paid.A.toLocaleString('sv-SE');
+  personBTotalEl.textContent = paid.B.toLocaleString('sv-SE');
+
+  const balance = totalIncome - totalExpenses;
   balanceEl.textContent = balance.toLocaleString('sv-SE');
 
+  // 1. Vad borde varje person betala?
+const sharePerPerson = totalExpenses / 2;
+
+// 2. Skillnad mellan betalat och andel
+const diffA = paid.A - sharePerPerson;
+const diffB = paid.B - sharePerPerson;
+
+// 3. Bestäm Swish-resultat
+if (diffA > 0) {
+  settlementResultEl.textContent =
+    `Person B ska swisha Person A ${diffA.toLocaleString('sv-SE')} kr`;
+} else if (diffB > 0) {
+  settlementResultEl.textContent =
+    `Person A ska swisha Person B ${diffB.toLocaleString('sv-SE')} kr`;
+} else {
+  settlementResultEl.textContent =
+    'Ingen behöver swisha något 🎉';
+}
 
   // färgkoda balans
   balanceEl.style.color = balance >= 0 ? 'green' : 'red';
