@@ -175,6 +175,8 @@ const personAIncomeInput = document.querySelector('#personA-income');
 const personBIncomeInput = document.querySelector('#personB-income');
 const totalIncomeEl = document.querySelector('#total-income');
 const balanceEl = document.querySelector('#balance-amount');
+const paidByInput = document.querySelector('input[name="paidBy"]:checked');
+
 
 // ===== RENDER CATEGORIES =====
 categories.expenses.forEach(category => {
@@ -205,13 +207,15 @@ const amount =Number(amountinput.value);
 const description =descriptioninput.value;
 const category =categoryinput.value;
 
-const expense = {
-  amount: amount,
-  description: description,
-  category: category,
-  paidBy: "A" // Hardcoded for now, can be dynamic later
+const paidByInput = document.querySelector('input[name="paidBy"]:checked');
+const paidBy = paidByInput.value;
 
-};
+ const expense = {
+    amount,
+    description,
+    category,
+    paidBy
+  };
 
 expenses.push(expense);
 Forminput.reset();
