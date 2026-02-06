@@ -150,8 +150,10 @@ När localStorage implementeras:
 - Läs in sparad data när sidan laddas
 */
 
-
+import categories from './categories.json';
 import './style.scss';
+console.log('categories:', categories);
+
 
 // Data strukturer
 let expenses = [];
@@ -159,6 +161,8 @@ const incomes = {
   personA: 0,
   personB: 0
 };
+
+
 
 // DOM element
 const amountinput =document.querySelector('#expense-amount');
@@ -172,6 +176,13 @@ const personBIncomeInput = document.querySelector('#personB-income');
 const totalIncomeEl = document.querySelector('#total-income');
 const balanceEl = document.querySelector('#balance-amount');
 
+// ===== RENDER CATEGORIES =====
+categories.expenses.forEach(category => {
+  const option = document.createElement('option');
+  option.value = category.value;
+  option.textContent = category.text;
+  categoryinput.appendChild(option);
+});
 
 // Event lyssnare
 personAIncomeInput.addEventListener('input', () => {
@@ -201,7 +212,6 @@ const expense = {
   paidBy: "A" // Hardcoded for now, can be dynamic later
 
 };
-
 
 expenses.push(expense);
 Forminput.reset();

@@ -1,0 +1,18 @@
+{
+  "expenses": [
+    { "text": "Boende", "value": "living" },
+    { "text": "El", "value": "electricity" },
+    { "text": "Hyra", "value": "rent" },
+    { "text": "Sophantering", "value": "garbage" },
+    { "text": "Streamingtjänst", "value": "streaming" },
+    { "text": "Transport", "value": "transport" },
+    { "text": "Försäkring", "value": "insurance" },
+    { "text": "Fordon", "value": "vehicle" },
+    { "text": "Mobil och internet", "value": "mobile-internet" }
+  ],
+  "incomes": [
+    { "text": "Lön", "value": "salary" },
+    { "text": "Studiebidrag", "value": "studentincome" },
+    { "text": "Övrigt", "value": "other" }
+  ]
+}
