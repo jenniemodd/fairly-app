@@ -65,19 +65,34 @@ h3 {
   font-size: 0.8rem;
 }
 
-.expense-form {
+#expense-form {
   background: white;
   padding: 16px;
   margin-bottom: 16px;
   border-radius: 8px;
 }
 
-#expense-form label {
+#expense-form input {
   margin-top: 8px;
   padding: 5px;
   border-radius: 8px;
   border: 1px solid #ccc;
 }
+
+#expense-form label {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+}
+
+#expense-category {
+  margin-top: 8px;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+}
+
 
 
 footer {
