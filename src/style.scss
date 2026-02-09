@@ -151,6 +151,32 @@ fieldset legend {
   font-size: 0.8rem;
 }
 
+.budget-posts button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 8px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  cursor: pointer;
+  margin-top: 15px;
+
+}
+
+.summary {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+}
+
+.summary p {
+  margin-bottom: 5px;
+}
+
+
 footer {
   text-align: center;
   font-size: 0.8rem;
