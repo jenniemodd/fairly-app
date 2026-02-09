@@ -12,6 +12,7 @@ header {
   padding: 16px;
   background-color: #a1a7ff;
   padding: 30px;
+  border-radius: 15px;
 }
 
 h1 {
@@ -27,7 +28,41 @@ h2 {
   color: black;
   font-size: 1rem;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.persons {
+  gap: 16px;
+  margin-bottom: 15px;
+  border-radius: 15px;
+}
+
+h3 {
+  font-family: 'jost', sans-serif;
+  color: black;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.person-card {
+  margin-top: 1px;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  border-radius: 15px;
+}
+
+.person-card input {
+  margin-top: 8px;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
 }
 
 
