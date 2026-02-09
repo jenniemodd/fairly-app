@@ -91,9 +91,42 @@ h3 {
   border: 1px solid #ccc;
   font-family: 'Jost', sans-serif;
   font-size: 0.8rem;
+  margin-bottom: 10px;
 }
 
+fieldset legend {
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
 
+ .radio-group {
+  border: none;
+  padding: 0;
+  margin: 12px 0;
+  display: flex;
+  gap: 16px;
+}
+
+.radio-group legend {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.radio-option input[type="radio"] {
+  margin: 0;
+  accent-color: #a1a7ff;
+  transform: scale(1.1);
+  cursor: pointer;
+}
 
 footer {
   text-align: center;

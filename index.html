@@ -77,17 +77,20 @@
           </select>
         </label>
 
-        <fieldset>
-          <legend>Vem betalade?</legend>
-          <label>
-            <input type="radio" name="paidBy" value="A" required />
-            Person A
-          </label>
-          <label>
-            <input type="radio" name="paidBy" value="B" />
-            Person B
-          </label>
-        </fieldset>
+    <fieldset class="radio-group">
+  <legend>Vem betalade?</legend>
+
+  <label class="radio-option">
+    <input type="radio" name="paidBy" value="A" required />
+    Person A
+  </label>
+
+  <label class="radio-option">
+    <input type="radio" name="paidBy" value="B" />
+    Person B
+  </label>
+</fieldset>
+
 
         <button type="submit">Lägg till</button>
       </form>
