@@ -103,6 +103,8 @@ fieldset legend {
 }
 
  .radio-group {
+  display: flex;
+  align-items: flex-start;
   border: none;
   padding: 0;
   margin: 12px 0;
@@ -119,6 +121,8 @@ fieldset legend {
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .radio-option input[type="radio"] {
@@ -126,6 +130,25 @@ fieldset legend {
   accent-color: #a1a7ff;
   transform: scale(1.1);
   cursor: pointer;
+}
+
+.add-expense button {
+  background-color: #a1a7ff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.budget-posts {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
 }
 
 footer {
