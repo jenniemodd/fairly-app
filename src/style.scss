@@ -15,14 +15,17 @@ body {
   margin: 0;
 }
 
-header {
-  text-align: center;
+.app-header {
+  position: relative;
+  display: flex;
+  justify-content: center;   /* centrerar h1 */
+  align-items: center;
   margin-top: 32px;
-  padding: 16px;
-  background-color: var(--primary-color);
   padding: 30px;
+  background-color: var(--primary-color);
   border-radius: 15px;
 }
+
 
 h1 {
   margin: 0;
@@ -30,6 +33,13 @@ h1 {
   color: white;
   font-size: 2rem;
 
+}
+
+.app-logo {
+  position: absolute;
+  left: 20px;
+  width: 50px;
+  height: auto;
 }
 
 h2 {
