@@ -149,11 +149,12 @@ När localStorage implementeras:
 
 import categories from './categories.json';
 import './style.scss';
+import { IExpense } from './models'
 console.log('categories:', categories);
 
 
 // Data strukturer
-let expenses = [];
+let expenses: IExpense[] = [];
 const incomes = {
   personA: 0,
   personB: 0
