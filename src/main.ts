@@ -149,7 +149,8 @@ När localStorage implementeras:
 
 import categories from './categories.json';
 import './style.scss';
-import { IExpense } from './models'
+import type { IExpense } from './models';
+
 console.log('categories:', categories);
 
 

@@ -1,5 +1,14 @@
 @use 'reset';
 
+:root {
+  --primary-color: #b385ff;
+  --secondary-color: #752ec4;
+  --background-color: #f5f5f5;
+  --text-color: #333;
+}
+
+
+
 body {
   font-family: system-ui, sans-serif;
   background: #f5f5f5;
@@ -10,7 +19,7 @@ header {
   text-align: center;
   margin-top: 32px;
   padding: 16px;
-  background-color: #a1a7ff;
+  background-color: var(--primary-color);
   padding: 30px;
   border-radius: 15px;
 }
@@ -127,13 +136,13 @@ fieldset legend {
 
 .radio-option input[type="radio"] {
   margin: 0;
-  accent-color: #a1a7ff;
+  accent-color: var(--primary-color);
   transform: scale(1.1);
   cursor: pointer;
 }
 
 .add-expense button {
-  background-color: #a1a7ff;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   padding: 10px;
@@ -152,7 +161,7 @@ fieldset legend {
 }
 
 .budget-posts button {
-  background-color: #ff6b6b;
+  background-color: var(--secondary-color);
   color: white;
   border: none;
   padding: 6px;
