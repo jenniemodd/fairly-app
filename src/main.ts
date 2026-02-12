@@ -1,7 +1,4 @@
 
-// @ts-nocheck
-
-
 /*
 FAIRLY – Pseudokod / Arbetsflöde
 
@@ -168,8 +165,6 @@ const incomes = {
 const amountinput =document.querySelector('#expense-amount');
 const descriptioninput =document.querySelector('#expense-description');
 const categoryinput =document.querySelector('#expense-category');
-const Forminput =document.querySelector('#expense-form');
-const ulElement = document.querySelector('#posts-list');
 const totalExpenseEl = document.querySelector('#total-expense');
 const personAIncomeInput = document.querySelector('#personA-income');
 const personBIncomeInput = document.querySelector('#personB-income');
@@ -179,6 +174,13 @@ const paidByInput = document.querySelector('input[name="paidBy"]:checked');
 const personATotalEl = document.querySelector('#personA-total');
 const personBTotalEl = document.querySelector('#personB-total');
 const settlementResultEl = document.querySelector('#settlement-result');
+
+// Typescript
+const Forminput: HTMLFormElement | null =
+  document.querySelector('#expense-form');
+
+  const ulElement =
+  document.querySelector<HTMLUListElement>('#posts-list');
 
 
 
