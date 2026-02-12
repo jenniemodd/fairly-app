@@ -184,7 +184,21 @@ const Forminput: HTMLFormElement | null =
   const ulElement =
   document.querySelector<HTMLUListElement>('#posts-list');
 
+const personANameInput =
+  document.querySelector<HTMLInputElement>('#personA-name');
 
+const personBNameInput =
+  document.querySelector<HTMLInputElement>('#personB-name');
+
+// Hjälpfunktion för namn kopplat till Person A och B
+
+const getPersonName = (person: 'A' | 'B'): string => {
+  if (person === 'A') {
+    return personANameInput?.value || 'Person A';
+  } else {
+    return personBNameInput?.value || 'Person B';
+  }
+};
 
 
 // ===== RENDER CATEGORIES =====
@@ -294,7 +308,8 @@ const renderExpenses = () => {
   expenses.forEach((expense, index) => {
     const li = document.createElement('li');
 
-    li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (Person ${expense.paidBy})`;
+    li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)})
+)`;
      
     const deleteButton = document.createElement('button');
      deleteButton.textContent = 'Ta bort';
