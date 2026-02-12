@@ -190,6 +190,13 @@ const personANameInput =
 const personBNameInput =
   document.querySelector<HTMLInputElement>('#personB-name');
 
+const radioPersonASpan =
+  document.querySelector<HTMLSpanElement>('#radio-personA');
+
+const radioPersonBSpan =
+  document.querySelector<HTMLSpanElement>('#radio-personB');
+
+
 // Hjälpfunktion för namn kopplat till Person A och B
 
 const getPersonName = (person: 'A' | 'B'): string => {
@@ -199,6 +206,18 @@ const getPersonName = (person: 'A' | 'B'): string => {
     return personBNameInput?.value || 'Person B';
   }
 };
+
+// Eventlyssnare för namnändring
+personANameInput?.addEventListener('input', () => {
+  radioPersonASpan!.textContent =
+    personANameInput.value || 'Person A';
+});
+
+personBNameInput?.addEventListener('input', () => {
+  radioPersonBSpan!.textContent =
+    personBNameInput.value || 'Person B';
+});
+
 
 
 // ===== RENDER CATEGORIES =====
@@ -308,7 +327,7 @@ const renderExpenses = () => {
   expenses.forEach((expense, index) => {
     const li = document.createElement('li');
 
-    li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)})
+    li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)}
 )`;
      
     const deleteButton = document.createElement('button');
@@ -362,10 +381,11 @@ const diffB = paid.B - sharePerPerson;
 // 3. Bestäm Swish-resultat
 if (diffA > 0) {
   settlementResultEl.textContent =
-    `Person B ska swisha Person A ${diffA.toLocaleString('sv-SE')} kr`;
+    `${getPersonName('B')} ska swisha ${getPersonName('A')}
+ ${diffA.toLocaleString('sv-SE')} kr`;
 } else if (diffB > 0) {
   settlementResultEl.textContent =
-    `Person A ska swisha Person B ${diffB.toLocaleString('sv-SE')} kr`;
+    `${getPersonName('A')} ska swisha ${getPersonName('B')} ${diffB.toLocaleString('sv-SE')} kr`;
 } else {
   settlementResultEl.textContent =
     'Ingen behöver swisha något 🎉';

@@ -33,7 +33,7 @@
           <h3>Person A</h3>
           <label>
             Namn
-            <input type="text" id="personA-name" />
+            <input type="text" id="personA-name"/>
           </label>
           <label>
             Inkomst
@@ -45,7 +45,7 @@
           <h3>Person B</h3>
           <label>
             Namn
-            <input type="text" id="personB-name" />
+            <input type="text" id="personB-name"/>
           </label>
           <label>
             Inkomst
@@ -81,16 +81,16 @@
 
     <fieldset class="radio-group">
   <legend>Vem betalade?</legend>
+<label class="radio-option">
+  <input type="radio" name="paidBy" value="A" />
+  <span id="radio-personA">Person A</span>
+</label>
 
-  <label class="radio-option">
-    <input type="radio" name="paidBy" value="A" required />
-    Person A
-  </label>
+<label class="radio-option">
+  <input type="radio" name="paidBy" value="B" />
+  <span id="radio-personB">Person B</span>
+</label>
 
-  <label class="radio-option">
-    <input type="radio" name="paidBy" value="B" />
-    Person B
-  </label>
 </fieldset>
 
 
