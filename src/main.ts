@@ -162,40 +162,58 @@ const incomes = {
 };
 
 
+// DOM element Typescript
 
-// DOM element
-const amountinput =document.querySelector('#expense-amount');
-const descriptioninput =document.querySelector('#expense-description');
-const categoryinput =document.querySelector('#expense-category');
-const totalExpenseEl = document.querySelector('#total-expense');
-const personAIncomeInput = document.querySelector('#personA-income');
-const personBIncomeInput = document.querySelector('#personB-income');
-const totalIncomeEl = document.querySelector('#total-income');
-const balanceEl = document.querySelector('#balance-amount');
-const paidByInput = document.querySelector('input[name="paidBy"]:checked');
-const personATotalEl = document.querySelector('#personA-total');
-const personBTotalEl = document.querySelector('#personB-total');
-const settlementResultEl = document.querySelector('#settlement-result');
+const amountinput =
+  document.querySelector<HTMLInputElement>('#expense-amount')!;
 
-// Typescript
-const Forminput: HTMLFormElement | null =
-  document.querySelector('#expense-form');
+const descriptioninput =
+  document.querySelector<HTMLInputElement>('#expense-description')!;
 
-  const ulElement =
-  document.querySelector<HTMLUListElement>('#posts-list');
+const categoryinput =
+  document.querySelector<HTMLSelectElement>('#expense-category')!;
+
+const totalExpenseEl =
+  document.querySelector<HTMLSpanElement>('#total-expense')!;
+
+const personAIncomeInput =
+  document.querySelector<HTMLInputElement>('#personA-income')!;
+
+const personBIncomeInput =
+  document.querySelector<HTMLInputElement>('#personB-income')!;
+
+const totalIncomeEl =
+  document.querySelector<HTMLSpanElement>('#total-income')!;
+
+const balanceEl =
+  document.querySelector<HTMLSpanElement>('#balance-amount')!;
+
+const personATotalEl =
+  document.querySelector<HTMLSpanElement>('#personA-total')!;
+
+const personBTotalEl =
+  document.querySelector<HTMLSpanElement>('#personB-total')!;
+
+const settlementResultEl =
+  document.querySelector<HTMLParagraphElement>('#settlement-result')!;
+
+const Forminput =
+  document.querySelector<HTMLFormElement>('#expense-form')!;
+
+const ulElement =
+  document.querySelector<HTMLUListElement>('#posts-list')!;
 
 const personANameInput =
-  document.querySelector<HTMLInputElement>('#personA-name');
+  document.querySelector<HTMLInputElement>('#personA-name')!;
 
 const personBNameInput =
-  document.querySelector<HTMLInputElement>('#personB-name');
+  document.querySelector<HTMLInputElement>('#personB-name')!;
 
 const radioPersonASpan =
-  document.querySelector<HTMLSpanElement>('#radio-personA');
+  document.querySelector<HTMLSpanElement>('#radio-personA')!;
 
 const radioPersonBSpan =
-  document.querySelector<HTMLSpanElement>('#radio-personB');
-
+  document.querySelector<HTMLSpanElement>('#radio-personB')!;
 
 // Hjälpfunktion för namn kopplat till Person A och B
 
@@ -249,14 +267,14 @@ const amount =Number(amountinput.value);
 const description =descriptioninput.value;
 const category =categoryinput.value;
 
-const paidByInput = document.querySelector('input[name="paidBy"]:checked');
-const paidBy = paidByInput.value;
+const paidBy =
+  document.querySelector<HTMLInputElement>('input[name="paidBy"]:checked')!.value;
 
- const expense = {
+ const expense: IExpense = {
     amount,
     description,
     category,
-    paidBy
+    paidBy: paidBy as 'A' | 'B'
   };
 
 expenses.push(expense);
@@ -294,8 +312,8 @@ function readIncomesFromLocalStorage() {
   incomes.personA = parsed.personA || 0;
   incomes.personB = parsed.personB || 0;
 
-  personAIncomeInput.value = incomes.personA;
-  personBIncomeInput.value = incomes.personB;
+personAIncomeInput.value = String(incomes.personA);
+personBIncomeInput.value = String(incomes.personB);
 }
 
 // Funktion för sluträkning av utgifer
