@@ -8,7 +8,8 @@
     { "text": "Transport", "value": "transport" },
     { "text": "Försäkring", "value": "insurance" },
     { "text": "Fordon", "value": "vehicle" },
-    { "text": "Mobil och internet", "value": "mobile-internet" }
+    { "text": "Mobil och internet", "value": "mobile-internet" },
+    { "text": "Övrigt", "value": "other" }
   ],
   "incomes": [
     { "text": "Lön", "value": "salary" },
