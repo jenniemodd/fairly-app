@@ -147,350 +147,391 @@ När localStorage implementeras:
 - Läs in sparad data när sidan laddas
 */
 
-import categories from './categories.json';
-import './style.scss';
-import type { IExpense } from './models';
+import categories from './categories.json'
+import './style.scss'
+import type { IExpense } from './models'
 
 // ======================
 // STATE
 // ======================
 
-let expenses: IExpense[] = [];
+let expenses: IExpense[] = []
 
 const incomes = {
   personA: 0,
   personB: 0
-};
+}
 
 // ======================
-// DOM ELEMENTS
+// DOM
 // ======================
 
-const amountinput =
-  document.querySelector<HTMLInputElement>('#expense-amount')!;
+const amountInput =
+  document.querySelector<HTMLInputElement>('#expense-amount')!
 
-const descriptioninput =
-  document.querySelector<HTMLInputElement>('#expense-description')!;
+const descriptionInput =
+  document.querySelector<HTMLInputElement>('#expense-description')!
 
-const categoryinput =
-  document.querySelector<HTMLSelectElement>('#expense-category')!;
+const categoryInput =
+  document.querySelector<HTMLSelectElement>('#expense-category')!
 
 const splitPercentageInput =
-  document.querySelector<HTMLInputElement>('#split-percentage')!;
-
-const splitModeInputs =
-  document.querySelectorAll<HTMLInputElement>('input[name="splitMode"]');
-
-const totalExpenseEl =
-  document.querySelector<HTMLSpanElement>('#total-expense')!;
-
-const totalIncomeEl =
-  document.querySelector<HTMLSpanElement>('#total-income')!;
-
-const balanceEl =
-  document.querySelector<HTMLSpanElement>('#balance-amount')!;
-
-const personATotalEl =
-  document.querySelector<HTMLSpanElement>('#personA-total')!;
-
-const personBTotalEl =
-  document.querySelector<HTMLSpanElement>('#personB-total')!;
-
-const settlementResultEl =
-  document.querySelector<HTMLParagraphElement>('#settlement-result')!;
-
-const personAIncomeInput =
-  document.querySelector<HTMLInputElement>('#personA-income')!;
-
-const personBIncomeInput =
-  document.querySelector<HTMLInputElement>('#personB-income')!;
-
-const personANameInput =
-  document.querySelector<HTMLInputElement>('#personA-name')!;
-
-const personBNameInput =
-  document.querySelector<HTMLInputElement>('#personB-name')!;
-
-const radioPersonASpan =
-  document.querySelector<HTMLSpanElement>('#radio-personA')!;
-
-const radioPersonBSpan =
-  document.querySelector<HTMLSpanElement>('#radio-personB')!;
-
-const Forminput =
-  document.querySelector<HTMLFormElement>('#expense-form')!;
-
-const ulElement =
-  document.querySelector<HTMLUListElement>('#posts-list')!;
+  document.querySelector<HTMLInputElement>('#split-percentage')!
 
 const percentageContainer =
-  document.querySelector<HTMLDivElement>('#percentage-container')!;
+  document.querySelector<HTMLDivElement>('#percentage-container')!
 
-  const personARemainingEl =
-  document.querySelector<HTMLSpanElement>('#personA-remaining')!;
+const splitModeInputs =
+  document.querySelectorAll<HTMLInputElement>('input[name="splitMode"]')
+
+const totalExpenseEl =
+  document.querySelector<HTMLSpanElement>('#total-expense')!
+
+const totalIncomeEl =
+  document.querySelector<HTMLSpanElement>('#total-income')!
+
+const balanceEl =
+  document.querySelector<HTMLSpanElement>('#balance-amount')!
+
+const personATotalEl =
+  document.querySelector<HTMLSpanElement>('#personA-total')!
+
+const personBTotalEl =
+  document.querySelector<HTMLSpanElement>('#personB-total')!
+
+const settlementResultEl =
+  document.querySelector<HTMLParagraphElement>('#settlement-result')!
+
+const personARemainingEl =
+  document.querySelector<HTMLSpanElement>('#personA-remaining')!
 
 const personBRemainingEl =
-  document.querySelector<HTMLSpanElement>('#personB-remaining')!;
+  document.querySelector<HTMLSpanElement>('#personB-remaining')!
+
+const personAIncomeInput =
+  document.querySelector<HTMLInputElement>('#personA-income')!
+
+const personBIncomeInput =
+  document.querySelector<HTMLInputElement>('#personB-income')!
+
+const personANameInput =
+  document.querySelector<HTMLInputElement>('#personA-name')!
+
+const personBNameInput =
+  document.querySelector<HTMLInputElement>('#personB-name')!
+
+const radioPersonASpan =
+  document.querySelector<HTMLSpanElement>('#radio-personA')!
+
+const radioPersonBSpan =
+  document.querySelector<HTMLSpanElement>('#radio-personB')!
+
+const form =
+  document.querySelector<HTMLFormElement>('#expense-form')!
+
+const ulElement =
+  document.querySelector<HTMLUListElement>('#posts-list')!
 
 // ======================
 // HELPERS
 // ======================
 
-const getPersonName = (person: 'A' | 'B'): string => {
-  return person === 'A'
+const getPersonName = (person: 'A' | 'B') =>
+  person === 'A'
     ? personANameInput.value || 'Person A'
-    : personBNameInput.value || 'Person B';
-};
+    : personBNameInput.value || 'Person B'
 
-const calculateTotalExpenses = () => {
-  return expenses.reduce((total, expense) => total + expense.amount, 0);
-};
+const calculateTotalExpenses = () =>
+  expenses.reduce((sum, e) => sum + e.amount, 0)
 
-const calculateTotalIncome = () => {
-  return incomes.personA + incomes.personB;
-};
+const calculateTotalIncome = () =>
+  incomes.personA + incomes.personB
 
 const calculatePaidPerPerson = () => {
-  let paidA = 0;
-  let paidB = 0;
+  let paidA = 0
+  let paidB = 0
 
-  expenses.forEach(expense => {
-    if (expense.paidBy === 'A') {
-      paidA += expense.amount;
-    } else {
-      paidB += expense.amount;
-    }
-  });
+  expenses.forEach(e => {
+    if (e.paidBy === 'A') paidA += e.amount
+    else paidB += e.amount
+  })
 
-  return { A: paidA, B: paidB };
-};
-
+  return { A: paidA, B: paidB }
+}
 
 // ======================
 // RENDER
 // ======================
 
 const renderExpenses = () => {
-  ulElement.innerHTML = '';
+  ulElement.innerHTML = ''
 
   expenses.forEach((expense, index) => {
-    const li = document.createElement('li');
+    const li = document.createElement('li')
 
     li.textContent =
-      `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)})`;
+      `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)})`
 
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Ta bort';
+    const deleteButton = document.createElement('button')
+    deleteButton.textContent = 'Ta bort'
 
     deleteButton.addEventListener('click', () => {
-      expenses.splice(index, 1);
-      renderExpenses();
-      updateSummary();
-      saveToLocalStorage();
-    });
+      expenses.splice(index, 1)
+      saveExpenses()
+      renderExpenses()
+      updateSummary()
+    })
 
-    li.appendChild(deleteButton);
-    ulElement.appendChild(li);
-  });
-};
+    li.appendChild(deleteButton)
+    ulElement.appendChild(li)
+  })
+}
 
 // ======================
 // SUMMARY
 // ======================
 
 const updateSummary = () => {
-  const totalExpenses = calculateTotalExpenses();
-  const totalIncome = calculateTotalIncome();
-  const paid = calculatePaidPerPerson();
+  const totalExpenses = calculateTotalExpenses()
+  const totalIncome = calculateTotalIncome()
+  const paid = calculatePaidPerPerson()
 
-  // Totals
-  totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE');
-  totalIncomeEl.textContent = totalIncome.toLocaleString('sv-SE');
+  totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE')
+  totalIncomeEl.textContent = totalIncome.toLocaleString('sv-SE')
 
-  personATotalEl.textContent = paid.A.toLocaleString('sv-SE');
-  personBTotalEl.textContent = paid.B.toLocaleString('sv-SE');
+  personATotalEl.textContent = paid.A.toLocaleString('sv-SE')
+  personBTotalEl.textContent = paid.B.toLocaleString('sv-SE')
 
-  // Balance
-  const balance = totalIncome - totalExpenses;
-  balanceEl.textContent = balance.toLocaleString('sv-SE');
-  balanceEl.style.color = balance >= 0 ? 'green' : 'red';
+  const balance = totalIncome - totalExpenses
+  balanceEl.textContent = balance.toLocaleString('sv-SE')
+  balanceEl.style.color = balance >= 0 ? 'green' : 'red'
 
-  // ======================
-  // SPLIT LOGIC
-  // ======================
-
-  let personAShare = 0;
-  let personBShare = 0;
+  let personAShare = 0
+  let personBShare = 0
 
   const selectedMode =
     document.querySelector<HTMLInputElement>(
       'input[name="splitMode"]:checked'
-    )!.value;
+    )!.value
 
+  // =========================
+  // 1️⃣ PROCENT
+  // =========================
   if (selectedMode === 'percentage') {
-    const splitPercentage = Number(splitPercentageInput.value);
-    personAShare = totalExpenses * (splitPercentage / 100);
-    personBShare = totalExpenses - personAShare;
-  } else {
-    // Lika mycket kvar
-    personAShare =
-      (totalExpenses + incomes.personA - incomes.personB) / 2;
-    personBShare = totalExpenses - personAShare;
+    const splitPercentage = Number(splitPercentageInput.value)
+    personAShare = totalExpenses * (splitPercentage / 100)
+    personBShare = totalExpenses - personAShare
   }
 
-  // ======================
-  // SWISH LOGIC
-  // ======================
+  // =========================
+  // 2️⃣ LIKA MYCKET KVAR (INDIVIDUELL)
+  // =========================
+  else if (selectedMode === 'equalIncome') {
 
-  const diffA = paid.A - personAShare;
-  const diffB = paid.B - personBShare;
+    let idealAShare =
+      (totalExpenses + incomes.personA - incomes.personB) / 2
+
+    let idealBShare = totalExpenses - idealAShare
+
+    personAShare = Math.min(idealAShare, incomes.personA)
+    personBShare = Math.min(idealBShare, incomes.personB)
+
+    if (personAShare + personBShare < totalExpenses) {
+      const remaining =
+        totalExpenses - (personAShare + personBShare)
+
+      if (personAShare < incomes.personA) {
+        personAShare += remaining
+      } else {
+        personBShare += remaining
+      }
+    }
+  }
+
+  // =========================
+  // 3️⃣ GEMENSAM POTT
+  // =========================
+  else if (selectedMode === 'sharedPool') {
+    const totalRemaining = totalIncome - totalExpenses
+    const equalRemaining = totalRemaining / 2
+
+    personAShare = incomes.personA - equalRemaining
+    personBShare = incomes.personB - equalRemaining
+  }
+
+  // =========================
+  // SWISH
+  // =========================
+
+  const diffA = paid.A - personAShare
+  const diffB = paid.B - personBShare
 
   if (diffA > 0) {
-    settlementResultEl.textContent =
-      `${getPersonName('B')} ska swisha ${getPersonName('A')} ${diffA.toLocaleString('sv-SE')} kr`;
+    settlementResultEl.innerHTML =
+      `<strong>${getPersonName('B')}</strong> ska swisha <strong>${getPersonName('A')}</strong> ${diffA.toLocaleString('sv-SE')} kr`
   } else if (diffB > 0) {
-    settlementResultEl.textContent =
-      `${getPersonName('A')} ska swisha ${getPersonName('B')} ${diffB.toLocaleString('sv-SE')} kr`;
+    settlementResultEl.innerHTML =
+      `<strong>${getPersonName('A')}</strong> ska swisha <strong>${getPersonName('B')}</strong> ${diffB.toLocaleString('sv-SE')} kr`
   } else {
-    settlementResultEl.textContent = 'Ingen behöver swisha.';
+    settlementResultEl.textContent = 'Ingen behöver swisha.'
   }
 
-  // ======================
-  // REMAINING AFTER SWISH
-  // ======================
+  // =========================
+  // KVAR EFTER SWISH
+  // =========================
 
-  const remainingA = incomes.personA - personAShare;
-  const remainingB = incomes.personB - personBShare;
+  const remainingA = incomes.personA - personAShare
+  const remainingB = incomes.personB - personBShare
 
   personARemainingEl.textContent =
-    `${getPersonName('A')} har kvar: ${remainingA.toLocaleString('sv-SE')} kr`;
+    `${getPersonName('A')} har kvar: ${remainingA.toLocaleString('sv-SE')} kr`
 
   personBRemainingEl.textContent =
-    `${getPersonName('B')} har kvar: ${remainingB.toLocaleString('sv-SE')} kr`;
-
-  personARemainingEl.style.color =
-    remainingA < 0 ? 'red' : 'inherit';
-
-  personBRemainingEl.style.color =
-    remainingB < 0 ? 'red' : 'inherit';
-};
-// ======================
-// EVENTS
-// ======================
-
-// Render categories
-categories.expenses.forEach(category => {
-  const option = document.createElement('option');
-  option.value = category.value;
-  option.textContent = category.text;
-  categoryinput.appendChild(option);
-});
-
-// Name updates
-personANameInput.addEventListener('input', () => {
-  radioPersonASpan.textContent =
-    personANameInput.value || 'Person A';
-  updateSummary();
-});
-
-personBNameInput.addEventListener('input', () => {
-  radioPersonBSpan.textContent =
-    personBNameInput.value || 'Person B';
-  updateSummary();
-});
-
-// Income updates
-personAIncomeInput.addEventListener('input', () => {
-  incomes.personA = Number(personAIncomeInput.value);
-  saveIncomesToLocalStorage();
-  updateSummary();
-});
-
-personBIncomeInput.addEventListener('input', () => {
-  incomes.personB = Number(personBIncomeInput.value);
-  saveIncomesToLocalStorage();
-  updateSummary();
-});
-
-// Split mode change
-splitModeInputs.forEach(input => {
-  input.addEventListener('change', () => {
-
-    const selectedMode =
-      document.querySelector<HTMLInputElement>('input[name="splitMode"]:checked')!.value;
-
-    if (selectedMode === 'percentage') {
-      percentageContainer.style.display = 'block';
-    } else {
-      percentageContainer.style.display = 'none';
-    }
-
-    updateSummary();
-  });
-});
-// Split percentage change
-splitPercentageInput.addEventListener('input', updateSummary);
-
-// Submit expense
-Forminput.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  const paidBy =
-    document.querySelector<HTMLInputElement>('input[name="paidBy"]:checked')!.value;
-
-  const expense: IExpense = {
-    amount: Number(amountinput.value),
-    description: descriptioninput.value,
-    category: categoryinput.value,
-    paidBy: paidBy as 'A' | 'B'
-  };
-
-  expenses.push(expense);
-
-  Forminput.reset();
-  renderExpenses();
-  updateSummary();
-  saveToLocalStorage();
-});
-
+    `${getPersonName('B')} har kvar: ${remainingB.toLocaleString('sv-SE')} kr`
+}
 
 // ======================
 // LOCAL STORAGE
 // ======================
 
-function saveToLocalStorage() {
-  localStorage.setItem('expenses', JSON.stringify(expenses));
+function saveExpenses() {
+  localStorage.setItem('expenses', JSON.stringify(expenses))
 }
 
-function readFromLocalStorage() {
-  const saved = localStorage.getItem('expenses');
-  if (saved) {
-    expenses = JSON.parse(saved);
+function saveIncomes() {
+  localStorage.setItem('incomes', JSON.stringify(incomes))
+}
+
+function saveNames() {
+  localStorage.setItem('names', JSON.stringify({
+    personA: personANameInput.value,
+    personB: personBNameInput.value
+  }))
+}
+
+function saveSplitSettings() {
+  localStorage.setItem('splitSettings', JSON.stringify({
+    mode: document.querySelector<HTMLInputElement>('input[name="splitMode"]:checked')!.value,
+    percentage: splitPercentageInput.value
+  }))
+}
+
+function loadFromStorage() {
+
+  const savedExpenses = localStorage.getItem('expenses')
+  if (savedExpenses) expenses = JSON.parse(savedExpenses)
+
+  const savedIncomes = localStorage.getItem('incomes')
+  if (savedIncomes) {
+    const parsed = JSON.parse(savedIncomes)
+    incomes.personA = parsed.personA || 0
+    incomes.personB = parsed.personB || 0
+    personAIncomeInput.value = String(incomes.personA)
+    personBIncomeInput.value = String(incomes.personB)
+  }
+
+  const savedNames = localStorage.getItem('names')
+  if (savedNames) {
+    const parsed = JSON.parse(savedNames)
+    personANameInput.value = parsed.personA || ''
+    personBNameInput.value = parsed.personB || ''
+  }
+
+  const savedSplit = localStorage.getItem('splitSettings')
+  if (savedSplit) {
+    const parsed = JSON.parse(savedSplit)
+    document.querySelector<HTMLInputElement>(
+      `input[name="splitMode"][value="${parsed.mode}"]`
+    )!.checked = true
+
+    splitPercentageInput.value = parsed.percentage
   }
 }
 
-function saveIncomesToLocalStorage() {
-  localStorage.setItem('incomes', JSON.stringify(incomes));
-}
+// ======================
+// EVENTS
+// ======================
 
-function readIncomesFromLocalStorage() {
-  const saved = localStorage.getItem('incomes');
-  if (!saved) return;
+categories.expenses.forEach(category => {
+  const option = document.createElement('option')
+  option.value = category.value
+  option.textContent = category.text
+  categoryInput.appendChild(option)
+})
 
-  const parsed = JSON.parse(saved);
-  incomes.personA = parsed.personA || 0;
-  incomes.personB = parsed.personB || 0;
+personANameInput.addEventListener('input', () => {
+  radioPersonASpan.textContent =
+    personANameInput.value || 'Person A'
+  saveNames()
+  updateSummary()
+})
 
-  personAIncomeInput.value = String(incomes.personA);
-  personBIncomeInput.value = String(incomes.personB);
-}
+personBNameInput.addEventListener('input', () => {
+  radioPersonBSpan.textContent =
+    personBNameInput.value || 'Person B'
+  saveNames()
+  updateSummary()
+})
 
+personAIncomeInput.addEventListener('input', () => {
+  incomes.personA = Number(personAIncomeInput.value)
+  saveIncomes()
+  updateSummary()
+})
+
+personBIncomeInput.addEventListener('input', () => {
+  incomes.personB = Number(personBIncomeInput.value)
+  saveIncomes()
+  updateSummary()
+})
+
+splitModeInputs.forEach(input => {
+  input.addEventListener('change', () => {
+
+    const mode =
+      document.querySelector<HTMLInputElement>(
+        'input[name="splitMode"]:checked'
+      )!.value
+
+    percentageContainer.style.display =
+      mode === 'percentage' ? 'block' : 'none'
+
+    saveSplitSettings()
+    updateSummary()
+  })
+})
+
+splitPercentageInput.addEventListener('input', () => {
+  saveSplitSettings()
+  updateSummary()
+})
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault()
+
+  const paidBy =
+    document.querySelector<HTMLInputElement>(
+      'input[name="paidBy"]:checked'
+    )!.value
+
+  const expense: IExpense = {
+    amount: Number(amountInput.value),
+    description: descriptionInput.value,
+    category: categoryInput.value,
+    paidBy: paidBy as 'A' | 'B'
+  }
+
+  expenses.push(expense)
+  saveExpenses()
+  form.reset()
+  renderExpenses()
+  updateSummary()
+})
 
 // ======================
 // INIT
 // ======================
 
-readFromLocalStorage();
-readIncomesFromLocalStorage();
-renderExpenses();
-updateSummary();
+loadFromStorage()
+renderExpenses()
+updateSummary()

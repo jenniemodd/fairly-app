@@ -125,23 +125,32 @@
       <p>Total utgift Person A: <span id="personA-total">0</span> kr</p>
       <p>Total utgift Person B: <span id="personB-total">0</span> kr</p>
 
-      <div id="percentage-container">
-        <label for="split-percentage">
-          Fördelning procentuellt (Hur stor del ska person A betala)
-        </label>
-        <input type="number" id="split-percentage" value="50" min="0" max="100" />
-      </div>
-      <div>
-        <label>
-          <input type="radio" name="splitMode" value="percentage" checked>
-          Procent
-        </label>
+     <div id="percentage-container">
+  <label for="split-percentage">
+    Hur stor del ska Person A betala?
+  </label>
+  <input type="number" id="split-percentage" value="50" min="0" max="100" />
+</div>
+     
+     
+      <div class="split-modes">
 
-        <label>
-          <input type="radio" name="splitMode" value="equalLeft">
-          Lika mycket kvar
-        </label>
-      </div>
+  <label class="split-option">
+    <input type="radio" name="splitMode" value="percentage" checked>
+    Procentfördelning
+  </label>
+
+  <label class="split-option">
+    <input type="radio" name="splitMode" value="equalIncome">
+    Lika mycket kvar (baserat på individuell inkomst)
+  </label>
+
+  <label class="split-option">
+    <input type="radio" name="splitMode" value="sharedPool">
+    Gemensam ekonomi (lika kvar från total inkomst)
+  </label>
+
+</div>
 
       <p class="resultat-headline">Resultat:</p>
       <p class="result" id="settlement-result">
