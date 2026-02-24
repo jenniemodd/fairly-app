@@ -178,6 +178,9 @@ const categoryinput =
 const splitPercentageInput =
   document.querySelector<HTMLInputElement>('#split-percentage')!;
 
+const splitModeInputs =
+  document.querySelectorAll<HTMLInputElement>('input[name="splitMode"]');
+
 const totalExpenseEl =
   document.querySelector<HTMLSpanElement>('#total-expense')!;
 
@@ -220,16 +223,23 @@ const Forminput =
 const ulElement =
   document.querySelector<HTMLUListElement>('#posts-list')!;
 
+const percentageContainer =
+  document.querySelector<HTMLDivElement>('#percentage-container')!;
+
+  const personARemainingEl =
+  document.querySelector<HTMLSpanElement>('#personA-remaining')!;
+
+const personBRemainingEl =
+  document.querySelector<HTMLSpanElement>('#personB-remaining')!;
 
 // ======================
 // HELPERS
 // ======================
 
 const getPersonName = (person: 'A' | 'B'): string => {
-  if (person === 'A') {
-    return personANameInput.value || 'Person A';
-  }
-  return personBNameInput.value || 'Person B';
+  return person === 'A'
+    ? personANameInput.value || 'Person A'
+    : personBNameInput.value || 'Person B';
 };
 
 const calculateTotalExpenses = () => {
@@ -266,7 +276,8 @@ const renderExpenses = () => {
   expenses.forEach((expense, index) => {
     const li = document.createElement('li');
 
-    li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)})`;
+    li.textContent =
+      `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)})`;
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Ta bort';
@@ -283,7 +294,6 @@ const renderExpenses = () => {
   });
 };
 
-
 // ======================
 // SUMMARY
 // ======================
@@ -293,20 +303,44 @@ const updateSummary = () => {
   const totalIncome = calculateTotalIncome();
   const paid = calculatePaidPerPerson();
 
+  // Totals
   totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE');
   totalIncomeEl.textContent = totalIncome.toLocaleString('sv-SE');
 
   personATotalEl.textContent = paid.A.toLocaleString('sv-SE');
   personBTotalEl.textContent = paid.B.toLocaleString('sv-SE');
 
+  // Balance
   const balance = totalIncome - totalExpenses;
   balanceEl.textContent = balance.toLocaleString('sv-SE');
   balanceEl.style.color = balance >= 0 ? 'green' : 'red';
 
-  // PROCENTLOGIK
-  const splitPercentage = Number(splitPercentageInput.value);
-  const personAShare = totalExpenses * (splitPercentage / 100);
-  const personBShare = totalExpenses - personAShare;
+  // ======================
+  // SPLIT LOGIC
+  // ======================
+
+  let personAShare = 0;
+  let personBShare = 0;
+
+  const selectedMode =
+    document.querySelector<HTMLInputElement>(
+      'input[name="splitMode"]:checked'
+    )!.value;
+
+  if (selectedMode === 'percentage') {
+    const splitPercentage = Number(splitPercentageInput.value);
+    personAShare = totalExpenses * (splitPercentage / 100);
+    personBShare = totalExpenses - personAShare;
+  } else {
+    // Lika mycket kvar
+    personAShare =
+      (totalExpenses + incomes.personA - incomes.personB) / 2;
+    personBShare = totalExpenses - personAShare;
+  }
+
+  // ======================
+  // SWISH LOGIC
+  // ======================
 
   const diffA = paid.A - personAShare;
   const diffB = paid.B - personBShare;
@@ -320,9 +354,26 @@ const updateSummary = () => {
   } else {
     settlementResultEl.textContent = 'Ingen behöver swisha.';
   }
+
+  // ======================
+  // REMAINING AFTER SWISH
+  // ======================
+
+  const remainingA = incomes.personA - personAShare;
+  const remainingB = incomes.personB - personBShare;
+
+  personARemainingEl.textContent =
+    `${getPersonName('A')} har kvar: ${remainingA.toLocaleString('sv-SE')} kr`;
+
+  personBRemainingEl.textContent =
+    `${getPersonName('B')} har kvar: ${remainingB.toLocaleString('sv-SE')} kr`;
+
+  personARemainingEl.style.color =
+    remainingA < 0 ? 'red' : 'inherit';
+
+  personBRemainingEl.style.color =
+    remainingB < 0 ? 'red' : 'inherit';
 };
-
-
 // ======================
 // EVENTS
 // ======================
@@ -361,7 +412,23 @@ personBIncomeInput.addEventListener('input', () => {
   updateSummary();
 });
 
-// Split change
+// Split mode change
+splitModeInputs.forEach(input => {
+  input.addEventListener('change', () => {
+
+    const selectedMode =
+      document.querySelector<HTMLInputElement>('input[name="splitMode"]:checked')!.value;
+
+    if (selectedMode === 'percentage') {
+      percentageContainer.style.display = 'block';
+    } else {
+      percentageContainer.style.display = 'none';
+    }
+
+    updateSummary();
+  });
+});
+// Split percentage change
 splitPercentageInput.addEventListener('input', updateSummary);
 
 // Submit expense

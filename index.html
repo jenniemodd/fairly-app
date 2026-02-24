@@ -125,16 +125,38 @@
       <p>Total utgift Person A: <span id="personA-total">0</span> kr</p>
       <p>Total utgift Person B: <span id="personB-total">0</span> kr</p>
 
-      <label for="split-percentage">
-        Fördelning procentuellt (Hur stor del ska person A betala)
-      </label>
-      <input type="number" id="split-percentage" value="50" min="0" max="100" />
+      <div id="percentage-container">
+        <label for="split-percentage">
+          Fördelning procentuellt (Hur stor del ska person A betala)
+        </label>
+        <input type="number" id="split-percentage" value="50" min="0" max="100" />
+      </div>
+      <div>
+        <label>
+          <input type="radio" name="splitMode" value="percentage" checked>
+          Procent
+        </label>
 
-     <p class="resultat-headline">Resultat:</p>
+        <label>
+          <input type="radio" name="splitMode" value="equalLeft">
+          Lika mycket kvar
+        </label>
+      </div>
+
+      <p class="resultat-headline">Resultat:</p>
       <p class="result" id="settlement-result">
         <!-- Swish-resultat via JS -->
       </p>
+
+      <p class="remaining">
+        Kvar efter utgifter:
+      </p>
+      <p>
+        <span id="personA-remaining">0</span> kr -
+        <span id="personB-remaining">0</span> kr
+      </p>
     </section>
+
 
     <footer class="app-footer">
       <p>Copyright @Jennie Modd</p>
