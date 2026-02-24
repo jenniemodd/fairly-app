@@ -296,71 +296,106 @@ const updateSummary = () => {
   const totalIncome = calculateTotalIncome()
   const paid = calculatePaidPerPerson()
 
-  totalExpenseEl.textContent = totalExpenses.toLocaleString('sv-SE')
-  totalIncomeEl.textContent = totalIncome.toLocaleString('sv-SE')
+  totalExpenseEl.textContent =
+    totalExpenses.toLocaleString('sv-SE')
 
-  personATotalEl.textContent = paid.A.toLocaleString('sv-SE')
-  personBTotalEl.textContent = paid.B.toLocaleString('sv-SE')
+  totalIncomeEl.textContent =
+    totalIncome.toLocaleString('sv-SE')
+
+  personATotalEl.textContent =
+    paid.A.toLocaleString('sv-SE')
+
+  personBTotalEl.textContent =
+    paid.B.toLocaleString('sv-SE')
 
   const balance = totalIncome - totalExpenses
-  balanceEl.textContent = balance.toLocaleString('sv-SE')
-  balanceEl.style.color = balance >= 0 ? 'green' : 'red'
-
-  let personAShare = 0
-  let personBShare = 0
+  balanceEl.textContent =
+    balance.toLocaleString('sv-SE')
+  balanceEl.style.color =
+    balance >= 0 ? 'green' : 'red'
 
   const selectedMode =
     document.querySelector<HTMLInputElement>(
       'input[name="splitMode"]:checked'
     )!.value
 
+  let personAShare = 0
+  let personBShare = 0
+
   // =========================
   // 1️⃣ PROCENT
   // =========================
   if (selectedMode === 'percentage') {
-    const splitPercentage = Number(splitPercentageInput.value)
-    personAShare = totalExpenses * (splitPercentage / 100)
-    personBShare = totalExpenses - personAShare
+
+    const splitPercentage =
+      Number(splitPercentageInput.value)
+
+    personAShare =
+      Math.round(totalExpenses * (splitPercentage / 100))
+
+    personBShare =
+      totalExpenses - personAShare
   }
 
   // =========================
-  // 2️⃣ LIKA MYCKET KVAR (INDIVIDUELL)
+  // 2️⃣ LIKA MYCKET KVAR (Excel-modell)
   // =========================
   else if (selectedMode === 'equalIncome') {
 
-    let idealAShare =
-      (totalExpenses + incomes.personA - incomes.personB) / 2
+    const remainingA =
+      incomes.personA - paid.A
 
-    let idealBShare = totalExpenses - idealAShare
+    const remainingB =
+      incomes.personB - paid.B
 
-    personAShare = Math.min(idealAShare, incomes.personA)
-    personBShare = Math.min(idealBShare, incomes.personB)
+    const target =
+      Math.round((remainingA + remainingB) / 2)
 
-    if (personAShare + personBShare < totalExpenses) {
-      const remaining =
-        totalExpenses - (personAShare + personBShare)
+    const diffA = remainingA - target
+    const diffB = remainingB - target
 
-      if (personAShare < incomes.personA) {
-        personAShare += remaining
-      } else {
-        personBShare += remaining
-      }
+    if (diffA > 0) {
+      settlementResultEl.innerHTML =
+        `<strong>${getPersonName('A')}</strong> ska swisha <strong>${getPersonName('B')}</strong> ${Math.round(diffA).toLocaleString('sv-SE')} kr`
     }
+    else if (diffB > 0) {
+      settlementResultEl.innerHTML =
+        `<strong>${getPersonName('B')}</strong> ska swisha <strong>${getPersonName('A')}</strong> ${Math.round(diffB).toLocaleString('sv-SE')} kr`
+    }
+    else {
+      settlementResultEl.textContent =
+        'Ingen behöver swisha.'
+    }
+
+    personARemainingEl.textContent =
+      `${getPersonName('A')} har kvar: ${target.toLocaleString('sv-SE')} kr`
+
+    personBRemainingEl.textContent =
+      `${getPersonName('B')} har kvar: ${target.toLocaleString('sv-SE')} kr`
+
+    return
   }
 
   // =========================
   // 3️⃣ GEMENSAM POTT
   // =========================
   else if (selectedMode === 'sharedPool') {
-    const totalRemaining = totalIncome - totalExpenses
-    const equalRemaining = totalRemaining / 2
 
-    personAShare = incomes.personA - equalRemaining
-    personBShare = incomes.personB - equalRemaining
+    const totalRemaining =
+      totalIncome - totalExpenses
+
+    const equalRemaining =
+      Math.round(totalRemaining / 2)
+
+    personAShare =
+      incomes.personA - equalRemaining
+
+    personBShare =
+      incomes.personB - equalRemaining
   }
 
   // =========================
-  // SWISH
+  // SWISH (för 1 & 3)
   // =========================
 
   const diffA = paid.A - personAShare
@@ -368,20 +403,22 @@ const updateSummary = () => {
 
   if (diffA > 0) {
     settlementResultEl.innerHTML =
-      `<strong>${getPersonName('B')}</strong> ska swisha <strong>${getPersonName('A')}</strong> ${diffA.toLocaleString('sv-SE')} kr`
-  } else if (diffB > 0) {
+      `<strong>${getPersonName('B')}</strong> ska swisha <strong>${getPersonName('A')}</strong> ${Math.round(diffA).toLocaleString('sv-SE')} kr`
+  }
+  else if (diffB > 0) {
     settlementResultEl.innerHTML =
-      `<strong>${getPersonName('A')}</strong> ska swisha <strong>${getPersonName('B')}</strong> ${diffB.toLocaleString('sv-SE')} kr`
-  } else {
-    settlementResultEl.textContent = 'Ingen behöver swisha.'
+      `<strong>${getPersonName('A')}</strong> ska swisha <strong>${getPersonName('B')}</strong> ${Math.round(diffB).toLocaleString('sv-SE')} kr`
+  }
+  else {
+    settlementResultEl.textContent =
+      'Ingen behöver swisha.'
   }
 
-  // =========================
-  // KVAR EFTER SWISH
-  // =========================
+  const remainingA =
+    Math.round(incomes.personA - personAShare)
 
-  const remainingA = incomes.personA - personAShare
-  const remainingB = incomes.personB - personBShare
+  const remainingB =
+    Math.round(incomes.personB - personBShare)
 
   personARemainingEl.textContent =
     `${getPersonName('A')} har kvar: ${remainingA.toLocaleString('sv-SE')} kr`
@@ -395,56 +432,83 @@ const updateSummary = () => {
 // ======================
 
 function saveExpenses() {
-  localStorage.setItem('expenses', JSON.stringify(expenses))
+  localStorage.setItem(
+    'expenses',
+    JSON.stringify(expenses)
+  )
 }
 
 function saveIncomes() {
-  localStorage.setItem('incomes', JSON.stringify(incomes))
+  localStorage.setItem(
+    'incomes',
+    JSON.stringify(incomes)
+  )
 }
 
 function saveNames() {
-  localStorage.setItem('names', JSON.stringify({
-    personA: personANameInput.value,
-    personB: personBNameInput.value
-  }))
+  localStorage.setItem(
+    'names',
+    JSON.stringify({
+      personA: personANameInput.value,
+      personB: personBNameInput.value
+    })
+  )
 }
 
 function saveSplitSettings() {
-  localStorage.setItem('splitSettings', JSON.stringify({
-    mode: document.querySelector<HTMLInputElement>('input[name="splitMode"]:checked')!.value,
-    percentage: splitPercentageInput.value
-  }))
+  localStorage.setItem(
+    'splitSettings',
+    JSON.stringify({
+      mode: document.querySelector<HTMLInputElement>(
+        'input[name="splitMode"]:checked'
+      )!.value,
+      percentage: splitPercentageInput.value
+    })
+  )
 }
 
 function loadFromStorage() {
 
-  const savedExpenses = localStorage.getItem('expenses')
-  if (savedExpenses) expenses = JSON.parse(savedExpenses)
+  const savedExpenses =
+    localStorage.getItem('expenses')
+  if (savedExpenses)
+    expenses = JSON.parse(savedExpenses)
 
-  const savedIncomes = localStorage.getItem('incomes')
+  const savedIncomes =
+    localStorage.getItem('incomes')
   if (savedIncomes) {
-    const parsed = JSON.parse(savedIncomes)
+    const parsed =
+      JSON.parse(savedIncomes)
     incomes.personA = parsed.personA || 0
     incomes.personB = parsed.personB || 0
-    personAIncomeInput.value = String(incomes.personA)
-    personBIncomeInput.value = String(incomes.personB)
+    personAIncomeInput.value =
+      String(incomes.personA)
+    personBIncomeInput.value =
+      String(incomes.personB)
   }
 
-  const savedNames = localStorage.getItem('names')
+  const savedNames =
+    localStorage.getItem('names')
   if (savedNames) {
-    const parsed = JSON.parse(savedNames)
-    personANameInput.value = parsed.personA || ''
-    personBNameInput.value = parsed.personB || ''
+    const parsed =
+      JSON.parse(savedNames)
+    personANameInput.value =
+      parsed.personA || ''
+    personBNameInput.value =
+      parsed.personB || ''
   }
 
-  const savedSplit = localStorage.getItem('splitSettings')
+  const savedSplit =
+    localStorage.getItem('splitSettings')
   if (savedSplit) {
-    const parsed = JSON.parse(savedSplit)
+    const parsed =
+      JSON.parse(savedSplit)
     document.querySelector<HTMLInputElement>(
       `input[name="splitMode"][value="${parsed.mode}"]`
     )!.checked = true
 
-    splitPercentageInput.value = parsed.percentage
+    splitPercentageInput.value =
+      parsed.percentage
   }
 }
 
@@ -453,7 +517,8 @@ function loadFromStorage() {
 // ======================
 
 categories.expenses.forEach(category => {
-  const option = document.createElement('option')
+  const option =
+    document.createElement('option')
   option.value = category.value
   option.textContent = category.text
   categoryInput.appendChild(option)
@@ -474,13 +539,15 @@ personBNameInput.addEventListener('input', () => {
 })
 
 personAIncomeInput.addEventListener('input', () => {
-  incomes.personA = Number(personAIncomeInput.value)
+  incomes.personA =
+    Number(personAIncomeInput.value)
   saveIncomes()
   updateSummary()
 })
 
 personBIncomeInput.addEventListener('input', () => {
-  incomes.personB = Number(personBIncomeInput.value)
+  incomes.personB =
+    Number(personBIncomeInput.value)
   saveIncomes()
   updateSummary()
 })
@@ -494,7 +561,9 @@ splitModeInputs.forEach(input => {
       )!.value
 
     percentageContainer.style.display =
-      mode === 'percentage' ? 'block' : 'none'
+      mode === 'percentage'
+        ? 'block'
+        : 'none'
 
     saveSplitSettings()
     updateSummary()
