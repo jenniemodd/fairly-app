@@ -8,8 +8,10 @@
   <title>Fairly</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
@@ -33,7 +35,7 @@
           <h3>Person A</h3>
           <label>
             Namn
-            <input type="text" id="personA-name"/>
+            <input type="text" id="personA-name" />
           </label>
           <label>
             Inkomst
@@ -45,7 +47,7 @@
           <h3>Person B</h3>
           <label>
             Namn
-            <input type="text" id="personB-name"/>
+            <input type="text" id="personB-name" />
           </label>
           <label>
             Inkomst
@@ -79,19 +81,19 @@
           </select>
         </label>
 
-    <fieldset class="radio-group">
-  <legend>Vem betalade?</legend>
-<label class="radio-option">
-  <input type="radio" name="paidBy" value="A" />
-  <span id="radio-personA">Person A</span>
-</label>
+        <fieldset class="radio-group">
+          <legend>Vem betalade?</legend>
+          <label class="radio-option">
+            <input type="radio" name="paidBy" value="A" />
+            <span id="radio-personA">Person A</span>
+          </label>
 
-<label class="radio-option">
-  <input type="radio" name="paidBy" value="B" />
-  <span id="radio-personB">Person B</span>
-</label>
+          <label class="radio-option">
+            <input type="radio" name="paidBy" value="B" />
+            <span id="radio-personB">Person B</span>
+          </label>
 
-</fieldset>
+        </fieldset>
 
 
         <button type="submit">Lägg till</button>
@@ -123,8 +125,12 @@
       <p>Total utgift Person A: <span id="personA-total">0</span> kr</p>
       <p>Total utgift Person B: <span id="personB-total">0</span> kr</p>
 
-      <p>Fördelning utifrån Inkomst: <span id="split-type">50 / 50</span></p>
+      <label for="split-percentage">
+        Fördelning procentuellt (Hur stor del ska person A betala)
+      </label>
+      <input type="number" id="split-percentage" value="50" min="0" max="100" />
 
+     <p class="resultat-headline">Resultat:</p>
       <p class="result" id="settlement-result">
         <!-- Swish-resultat via JS -->
       </p>

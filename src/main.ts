@@ -151,18 +151,20 @@ import categories from './categories.json';
 import './style.scss';
 import type { IExpense } from './models';
 
-console.log('categories:', categories);
+// ======================
+// STATE
+// ======================
 
-
-// Data strukturer
 let expenses: IExpense[] = [];
+
 const incomes = {
   personA: 0,
   personB: 0
 };
 
-
-// DOM element Typescript
+// ======================
+// DOM ELEMENTS
+// ======================
 
 const amountinput =
   document.querySelector<HTMLInputElement>('#expense-amount')!;
@@ -173,14 +175,11 @@ const descriptioninput =
 const categoryinput =
   document.querySelector<HTMLSelectElement>('#expense-category')!;
 
+const splitPercentageInput =
+  document.querySelector<HTMLInputElement>('#split-percentage')!;
+
 const totalExpenseEl =
   document.querySelector<HTMLSpanElement>('#total-expense')!;
-
-const personAIncomeInput =
-  document.querySelector<HTMLInputElement>('#personA-income')!;
-
-const personBIncomeInput =
-  document.querySelector<HTMLInputElement>('#personB-income')!;
 
 const totalIncomeEl =
   document.querySelector<HTMLSpanElement>('#total-income')!;
@@ -197,11 +196,11 @@ const personBTotalEl =
 const settlementResultEl =
   document.querySelector<HTMLParagraphElement>('#settlement-result')!;
 
-const Forminput =
-  document.querySelector<HTMLFormElement>('#expense-form')!;
+const personAIncomeInput =
+  document.querySelector<HTMLInputElement>('#personA-income')!;
 
-const ulElement =
-  document.querySelector<HTMLUListElement>('#posts-list')!;
+const personBIncomeInput =
+  document.querySelector<HTMLInputElement>('#personB-income')!;
 
 const personANameInput =
   document.querySelector<HTMLInputElement>('#personA-name')!;
@@ -215,128 +214,51 @@ const radioPersonASpan =
 const radioPersonBSpan =
   document.querySelector<HTMLSpanElement>('#radio-personB')!;
 
-// Hjälpfunktion för namn kopplat till Person A och B
+const Forminput =
+  document.querySelector<HTMLFormElement>('#expense-form')!;
+
+const ulElement =
+  document.querySelector<HTMLUListElement>('#posts-list')!;
+
+
+// ======================
+// HELPERS
+// ======================
 
 const getPersonName = (person: 'A' | 'B'): string => {
   if (person === 'A') {
-    return personANameInput?.value || 'Person A';
-  } else {
-    return personBNameInput?.value || 'Person B';
+    return personANameInput.value || 'Person A';
   }
+  return personBNameInput.value || 'Person B';
 };
 
-// Eventlyssnare för namnändring
-personANameInput?.addEventListener('input', () => {
-  radioPersonASpan!.textContent =
-    personANameInput.value || 'Person A';
-});
+const calculateTotalExpenses = () => {
+  return expenses.reduce((total, expense) => total + expense.amount, 0);
+};
 
-personBNameInput?.addEventListener('input', () => {
-  radioPersonBSpan!.textContent =
-    personBNameInput.value || 'Person B';
-});
-
-
-
-// ===== RENDER CATEGORIES =====
-categories.expenses.forEach(category => {
-  const option = document.createElement('option');
-  option.value = category.value;
-  option.textContent = category.text;
-  categoryinput.appendChild(option);
-});
-
-// Event lyssnare
-personAIncomeInput.addEventListener('input', () => {
-  incomes.personA = Number(personAIncomeInput.value);
-  saveIncomesToLocalStorage();
-  updateSummary();
-});
-
-personBIncomeInput.addEventListener('input', () => {
-  incomes.personB = Number(personBIncomeInput.value);
-  saveIncomesToLocalStorage();
-  updateSummary();
-});
-
-
-Forminput.addEventListener('submit', function(event){
-  event.preventDefault();
-
-const amount =Number(amountinput.value);
-const description =descriptioninput.value;
-const category =categoryinput.value;
-
-const paidBy =
-  document.querySelector<HTMLInputElement>('input[name="paidBy"]:checked')!.value;
-
- const expense: IExpense = {
-    amount,
-    description,
-    category,
-    paidBy: paidBy as 'A' | 'B'
-  };
-
-expenses.push(expense);
-Forminput.reset();
-renderExpenses();
-updateSummary();
-saveToLocalStorage();
-
-
-
-});
-
-// ===== LOCAL STORAGE =====
-
-// Utgifter
-function saveToLocalStorage() {
-  localStorage.setItem("expenses", JSON.stringify(expenses));
-}
-
-function readFromLocalStorage() {
-  const savedValue = localStorage.getItem("expenses");
-  if (savedValue) expenses = JSON.parse(savedValue);
-}
-
-// Inkomst
-function saveIncomesToLocalStorage() {
-  localStorage.setItem("incomes", JSON.stringify(incomes));
-}
-
-function readIncomesFromLocalStorage() {
-  const savedIncomes = localStorage.getItem("incomes");
-  if (!savedIncomes) return;
-
-  const parsed = JSON.parse(savedIncomes);
-  incomes.personA = parsed.personA || 0;
-  incomes.personB = parsed.personB || 0;
-
-personAIncomeInput.value = String(incomes.personA);
-personBIncomeInput.value = String(incomes.personB);
-}
-
-// Funktion för sluträkning av utgifer
+const calculateTotalIncome = () => {
+  return incomes.personA + incomes.personB;
+};
 
 const calculatePaidPerPerson = () => {
-  let paidByA = 0;
-  let paidByB = 0;
+  let paidA = 0;
+  let paidB = 0;
 
   expenses.forEach(expense => {
     if (expense.paidBy === 'A') {
-      paidByA += expense.amount;
-    } else if (expense.paidBy === 'B') {
-      paidByB += expense.amount;
+      paidA += expense.amount;
+    } else {
+      paidB += expense.amount;
     }
   });
 
-  return {
-    A: paidByA,
-    B: paidByB
-  };
+  return { A: paidA, B: paidB };
 };
 
-//
+
+// ======================
+// RENDER
+// ======================
 
 const renderExpenses = () => {
   ulElement.innerHTML = '';
@@ -344,35 +266,27 @@ const renderExpenses = () => {
   expenses.forEach((expense, index) => {
     const li = document.createElement('li');
 
-    li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)}
-)`;
-     
+    li.textContent = `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)})`;
+
     const deleteButton = document.createElement('button');
-     deleteButton.textContent = 'Ta bort';
-     
-     deleteButton.addEventListener('click', function() {
-       expenses.splice(index, 1);
-       renderExpenses();
-       updateSummary();
-       saveToLocalStorage();
-     });
+    deleteButton.textContent = 'Ta bort';
+
+    deleteButton.addEventListener('click', () => {
+      expenses.splice(index, 1);
+      renderExpenses();
+      updateSummary();
+      saveToLocalStorage();
+    });
+
     li.appendChild(deleteButton);
     ulElement.appendChild(li);
   });
 };
 
-const calculateTotalExpenses = () => {
-  let total = 0;
 
-  expenses.forEach(expense => {
-    total += expense.amount;
-  });
-    return total;
-};
-
-  const calculateTotalIncome = () => {
-  return incomes.personA + incomes.personB;
-};
+// ======================
+// SUMMARY
+// ======================
 
 const updateSummary = () => {
   const totalExpenses = calculateTotalExpenses();
@@ -387,30 +301,127 @@ const updateSummary = () => {
 
   const balance = totalIncome - totalExpenses;
   balanceEl.textContent = balance.toLocaleString('sv-SE');
+  balanceEl.style.color = balance >= 0 ? 'green' : 'red';
 
-  // 1. Vad borde varje person betala?
-const sharePerPerson = totalExpenses / 2;
+  // PROCENTLOGIK
+  const splitPercentage = Number(splitPercentageInput.value);
+  const personAShare = totalExpenses * (splitPercentage / 100);
+  const personBShare = totalExpenses - personAShare;
 
-// 2. Skillnad mellan betalat och andel
-const diffA = paid.A - sharePerPerson;
-const diffB = paid.B - sharePerPerson;
+  const diffA = paid.A - personAShare;
+  const diffB = paid.B - personBShare;
 
-// 3. Bestäm Swish-resultat
-if (diffA > 0) {
-  settlementResultEl.textContent =
-    `${getPersonName('B')} ska swisha ${getPersonName('A')}
- ${diffA.toLocaleString('sv-SE')} kr`;
-} else if (diffB > 0) {
-  settlementResultEl.textContent =
-    `${getPersonName('A')} ska swisha ${getPersonName('B')} ${diffB.toLocaleString('sv-SE')} kr`;
-} else {
-  settlementResultEl.textContent =
-    'Ingen behöver swisha något 🎉';
+  if (diffA > 0) {
+    settlementResultEl.textContent =
+      `${getPersonName('B')} ska swisha ${getPersonName('A')} ${diffA.toLocaleString('sv-SE')} kr`;
+  } else if (diffB > 0) {
+    settlementResultEl.textContent =
+      `${getPersonName('A')} ska swisha ${getPersonName('B')} ${diffB.toLocaleString('sv-SE')} kr`;
+  } else {
+    settlementResultEl.textContent = 'Ingen behöver swisha.';
+  }
+};
+
+
+// ======================
+// EVENTS
+// ======================
+
+// Render categories
+categories.expenses.forEach(category => {
+  const option = document.createElement('option');
+  option.value = category.value;
+  option.textContent = category.text;
+  categoryinput.appendChild(option);
+});
+
+// Name updates
+personANameInput.addEventListener('input', () => {
+  radioPersonASpan.textContent =
+    personANameInput.value || 'Person A';
+  updateSummary();
+});
+
+personBNameInput.addEventListener('input', () => {
+  radioPersonBSpan.textContent =
+    personBNameInput.value || 'Person B';
+  updateSummary();
+});
+
+// Income updates
+personAIncomeInput.addEventListener('input', () => {
+  incomes.personA = Number(personAIncomeInput.value);
+  saveIncomesToLocalStorage();
+  updateSummary();
+});
+
+personBIncomeInput.addEventListener('input', () => {
+  incomes.personB = Number(personBIncomeInput.value);
+  saveIncomesToLocalStorage();
+  updateSummary();
+});
+
+// Split change
+splitPercentageInput.addEventListener('input', updateSummary);
+
+// Submit expense
+Forminput.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const paidBy =
+    document.querySelector<HTMLInputElement>('input[name="paidBy"]:checked')!.value;
+
+  const expense: IExpense = {
+    amount: Number(amountinput.value),
+    description: descriptioninput.value,
+    category: categoryinput.value,
+    paidBy: paidBy as 'A' | 'B'
+  };
+
+  expenses.push(expense);
+
+  Forminput.reset();
+  renderExpenses();
+  updateSummary();
+  saveToLocalStorage();
+});
+
+
+// ======================
+// LOCAL STORAGE
+// ======================
+
+function saveToLocalStorage() {
+  localStorage.setItem('expenses', JSON.stringify(expenses));
 }
 
-  // färgkoda balans
-  balanceEl.style.color = balance >= 0 ? 'green' : 'red';
-};
+function readFromLocalStorage() {
+  const saved = localStorage.getItem('expenses');
+  if (saved) {
+    expenses = JSON.parse(saved);
+  }
+}
+
+function saveIncomesToLocalStorage() {
+  localStorage.setItem('incomes', JSON.stringify(incomes));
+}
+
+function readIncomesFromLocalStorage() {
+  const saved = localStorage.getItem('incomes');
+  if (!saved) return;
+
+  const parsed = JSON.parse(saved);
+  incomes.personA = parsed.personA || 0;
+  incomes.personB = parsed.personB || 0;
+
+  personAIncomeInput.value = String(incomes.personA);
+  personBIncomeInput.value = String(incomes.personB);
+}
+
+
+// ======================
+// INIT
+// ======================
 
 readFromLocalStorage();
 readIncomesFromLocalStorage();
