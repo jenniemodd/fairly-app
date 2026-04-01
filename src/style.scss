@@ -223,14 +223,97 @@ fieldset legend {
 
 .summary {
   background: white;
-  padding: 16px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 16px;
   font-family: 'Jost', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
+/* Rubrik */
+.summary h2 {
+  margin-bottom: 12px;
+}
+
+/* Vanliga rader */
 .summary p {
-  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+}
+
+/* Gör siffror tydligare */
+.summary span {
+  font-weight: 600;
+}
+
+/* Balans extra tydlig */
+.balance {
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+/* Divider */
+.summary hr {
+  border: none;
+  height: 1px;
+  background: #eee;
+  margin: 12px 0;
+}
+
+/* Split modes */
+.split-modes {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Resultat */
+.result {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f3f0ff;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Gör namn tydliga */
+.result strong {
+  color: var(--secondary-color);
+}
+
+/* Remaining */
+.remaining {
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+/* Kvar-rad */
+.summary p:last-child {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.summary span {
+  min-width: 80px;
+  text-align: right;
+}
+
+.result {
+  font-size: 0.9rem;
+}
+
+.split-option {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.split-option:hover {
+  background: #f5f0ff;
 }
 
 

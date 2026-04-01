@@ -237,6 +237,15 @@ const form =
 const ulElement =
   document.querySelector<HTMLUListElement>('#posts-list')!
 
+const personALabel =
+  document.querySelector<HTMLSpanElement>('#personA-label')!
+
+const personBLabel =
+  document.querySelector<HTMLSpanElement>('#personB-label')!
+
+const personALabel2 =
+  document.querySelector<HTMLSpanElement>('#personA-label-2')!
+
 // ======================
 // HELPERS
 // ======================
@@ -316,20 +325,20 @@ const updateSummary = () => {
   const paid = calculatePaidPerPerson()
 
   totalExpenseEl.textContent =
-    totalExpenses.toLocaleString('sv-SE')
+    `${totalExpenses.toLocaleString('sv-SE')} kr`
 
   totalIncomeEl.textContent =
-    totalIncome.toLocaleString('sv-SE')
+    `${totalIncome.toLocaleString('sv-SE')} kr`
 
   personATotalEl.textContent =
-    paid.A.toLocaleString('sv-SE')
+    `${paid.A.toLocaleString('sv-SE')} kr`
 
   personBTotalEl.textContent =
-    paid.B.toLocaleString('sv-SE')
+    `${paid.B.toLocaleString('sv-SE')} kr`
 
   const balance = totalIncome - totalExpenses
   balanceEl.textContent =
-    balance.toLocaleString('sv-SE')
+    `${balance.toLocaleString('sv-SE')} kr`
   balanceEl.style.color =
     balance >= 0 ? 'green' : 'red'
 
@@ -544,15 +553,18 @@ categories.expenses.forEach(category => {
 })
 
 personANameInput.addEventListener('input', () => {
-  radioPersonASpan.textContent =
-    personANameInput.value || 'Person A'
+  const name = getPersonName('A')
+  radioPersonASpan.textContent = name
+  personALabel.textContent = name
+  personALabel2.textContent = name
   saveNames()
   updateSummary()
 })
 
 personBNameInput.addEventListener('input', () => {
-  radioPersonBSpan.textContent =
-    personBNameInput.value || 'Person B'
+  const name = getPersonName('B')
+  radioPersonBSpan.textContent = name
+  personBLabel.textContent = name
   saveNames()
   updateSummary()
 })

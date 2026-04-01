@@ -113,22 +113,22 @@
     <section class="summary">
       <h2>Sammanställning</h2>
 
-      <p>Totala inkomster: <span id="total-income">0</span> kr</p>
-      <p>Totala utgifter: <span id="total-expense">0</span> kr</p>
+      <p>Totala inkomster: <span id="total-income">0 kr</span></p>
+      <p>Totala utgifter: <span id="total-expense">0 kr</span></p>
 
       <p class="balance">
-        Balans: <span id="balance-amount">0</span> kr
+        Balans: <span id="balance-amount">0 kr</span>
       </p>
 
       <hr />
 
-      <p>Total utgift Person A: <span id="personA-total">0</span> kr</p>
-      <p>Total utgift Person B: <span id="personB-total">0</span> kr</p>
+     <p>Total utgift <span id="personA-label">Person A</span><span id="personA-total">0 kr</span></p>
+<p>Total utgift <span id="personB-label">Person B</span><span id="personB-total">0 kr</span></p>
 
      <div id="percentage-container">
-  <label for="split-percentage">
-    Hur stor del ska Person A betala?
-  </label>
+<label for="split-percentage">
+  Hur stor del ska <span id="personA-label-2">Person A</span> betala?
+</label>
   <input type="number" id="split-percentage" value="50" min="0" max="100" />
 </div>
      
@@ -161,8 +161,8 @@
         Kvar efter utgifter:
       </p>
       <p>
-        <span id="personA-remaining">0</span> kr -
-        <span id="personB-remaining">0</span> kr
+        <span id="personA-remaining">0</span>
+        <span id="personB-remaining">0</span>
       </p>
     </section>
 
