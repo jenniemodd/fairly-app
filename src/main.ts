@@ -155,6 +155,11 @@ import type { IExpense } from './models'
 // STATE
 // ======================
 
+const getCategoryLabel = (value: string) => {
+  const found = categories.expenses.find(c => c.value === value)
+  return found ? found.text : value
+}
+
 let expenses: IExpense[] = []
 
 const incomes = {
@@ -269,9 +274,19 @@ const renderExpenses = () => {
   expenses.forEach((expense, index) => {
     const li = document.createElement('li')
 
-    li.textContent =
-      `${expense.description} - ${expense.category} - ${expense.amount} kr (${getPersonName(expense.paidBy)})`
+    // Vänster text
+    const left = document.createElement('span')
+    left.textContent =
+  expense.description
+    ? `${getCategoryLabel(expense.category)} – ${expense.description} (${getPersonName(expense.paidBy)})`
+    : `${getCategoryLabel(expense.category)} (${getPersonName(expense.paidBy)})`
 
+    // Belopp
+    const amount = document.createElement('strong')
+    amount.textContent =
+      `${expense.amount.toLocaleString('sv-SE')} kr`
+
+    // Delete-knapp (DU SAKNADE DENNA)
     const deleteButton = document.createElement('button')
     deleteButton.textContent = 'Ta bort'
 
@@ -282,7 +297,11 @@ const renderExpenses = () => {
       updateSummary()
     })
 
+    // Lägg in allt i li
+    li.appendChild(left)
+    li.appendChild(amount)
     li.appendChild(deleteButton)
+
     ulElement.appendChild(li)
   })
 }

@@ -152,16 +152,32 @@ fieldset legend {
 }
 
 .add-expense button {
-  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, var(--secondary-color), #9d5cff);
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
+  padding: 12px 18px;
+  border-radius: 10px;
   font-family: 'Jost', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  width: auto;
-  display: inline-block;
+
+  display: block;
+  margin: 16px auto 0;
+  width: 100%;
+  max-width: 280px;
+
+  transition: all 0.2s ease;
+}
+
+.add-expense button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(117, 46, 196, 0.25);
+}
+
+.add-expense button:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .budget-posts {
@@ -174,21 +190,35 @@ fieldset legend {
 
 .budget-posts li {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fafafa;
+  border: 1px solid #eee;
+}
+
+.budget-posts li span {
+  flex: 1;
+}
+
+.budget-posts strong {
+  min-width: 80px;
+  text-align: right;
 }
 
 .budget-posts button {
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   color: white;
   border: none;
-  padding: 10px;
+  padding: 7px 18px;
   border-radius: 8px;
   font-family: 'Jost', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   cursor: pointer;
   margin-top: 0px;
+  margin-left: 20px;
 }
 
 .summary {
