@@ -125,11 +125,15 @@
      <p>Total utgift <span id="personA-label">Person A</span><span id="personA-total">0 kr</span></p>
 <p>Total utgift <span id="personB-label">Person B</span><span id="personB-total">0 kr</span></p>
 
-     <div id="percentage-container">
-<label for="split-percentage">
-  Hur stor del ska <span id="personA-label-2">Person A</span> betala?
-</label>
-  <input type="number" id="split-percentage" value="50" min="0" max="100" />
+   <div id="percentage-container">
+  <label>
+    Hur stor del ska <span id="personA-label-2">Person A</span> betala?
+  </label>
+
+  <div class="percentage-box">
+    <input type="number" id="split-percentage" value="50" min="0" max="100" />
+    <span>%</span>
+  </div>
 </div>
      
      

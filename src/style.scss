@@ -298,22 +298,86 @@ fieldset legend {
 }
 
 .summary span {
-  min-width: 80px;
+  min-width: 100px;
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .result {
   font-size: 0.9rem;
 }
 
-.split-option {
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
+.split-modes {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
+.split-option {
+  display: flex;         /* behåll flex */
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  margin-bottom: 0;      /* 🔥 stoppar label-margin */
+}
+
+.split-option input[type="radio"] {
+  width: auto;          /* 🔥 detta är problemet */
+  flex-shrink: 0;       /* 🔥 stoppar stretch */
+}
+
+/* Hover */
 .split-option:hover {
   background: #f5f0ff;
+}
+
+/* Radio */
+.split-option input[type="radio"] {
+  margin: 0;
+  accent-color: var(--secondary-color);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+#percentage-container {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fafafa;
+  border: 1px solid #eee;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 👇 viktigt – override global label */
+#percentage-container label {
+  display: inline;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+/* input + % */
+.percentage-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+/* input */
+#split-percentage {
+  width: 70px;
+  text-align: right;
+  padding: 6px 18px 6px 6px; /* 👈 extra space för % */
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-family: 'Jost', sans-serif;
 }
 
 
