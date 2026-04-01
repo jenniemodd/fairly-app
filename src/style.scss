@@ -152,14 +152,16 @@ fieldset legend {
 }
 
 .add-expense button {
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   color: white;
   border: none;
-  padding: 10px;
+  padding: 10px 16px;
   border-radius: 8px;
   font-family: 'Jost', sans-serif;
   font-size: 0.8rem;
   cursor: pointer;
+  width: auto;
+  display: inline-block;
 }
 
 .budget-posts {
@@ -170,17 +172,23 @@ fieldset legend {
   font-size: 0.8rem;
 }
 
+.budget-posts li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .budget-posts button {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 6px;
+  padding: 10px;
   border-radius: 8px;
   font-family: 'Jost', sans-serif;
   font-size: 0.7rem;
   cursor: pointer;
-  margin-top: 15px;
-
+  margin-top: 0px;
 }
 
 .summary {
@@ -231,6 +239,6 @@ label {
   margin-bottom: 12px;
 }
 
-input, select, button {
+input, select {
   width: 100%;
 }
